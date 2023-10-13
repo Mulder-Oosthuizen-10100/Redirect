@@ -121,10 +121,17 @@ for l in f:
 
         # Set the default destination url
         if not found_keyword:
+            # We have to add a new line character so that the file does not print one long line
             notFoundFile.write(lower_l + "\n")
+            # Loop through the keywords to find the default key word
             for kw in all_key_words:
+                # Check the wesite name is the working website name
                 if kw.get('WEBSITE').upper() == working_website:
+                    # Check if there is a default key word
                     if kw.get('DEFAULT') == 'TRUE':
+                        # Assign the destination url
                         destinationURL = kw.get('URL')
+                        # Write the destination url with the format old url + * + , + destination url + new line character so that the file does not print one long line
                         nf.write(lower_l + '*,' + destinationURL + "\n")
+                        # if the default key word is found stop looping though the key words
                         break
