@@ -1,12 +1,12 @@
 # Import the needed libraries
 import gspread # Integrate to google sheets
-import re # String maipulation
+import re # String manipulation
 from datetime import datetime # File date time 
 
 # sa = service account - this account is used to access the google sheets document
 sa = gspread.service_account()
 
-# sh = sheet - this will be the object that cointains the sheet document
+# sh = sheet - this will be the object that contains the sheet document
 sh = sa.open('WEBSITE_DATA')
 
 # wks_ = worksheet - this references the specific sheet inside the google sheets document
@@ -20,17 +20,16 @@ directory = input("Enter the folder location: ")
 # Fetch all the records - this will give the data as a dictionary
 # {
 #   {"WEBSITE": "Sandman"},
-#   {"WEBSITE": "Bandman"},
 #   {"WEBSITE": "TheGuy"}
 # }
 all_web_sites = wks_websites.get_all_records()
 
-# Show the user the available wesite names that was retrieved from the sheet
+# Show the user the available website names that was retrieved from the sheet
 print("")
 print("List of Websites:")
 print("=================")
 
-# Loop through the dictonary and print each website
+# Loop through the dictionary and print each website
 for wb in all_web_sites:
     print(" - " + wb.get('WEBSITE'))
 
@@ -69,15 +68,15 @@ for rp in all_remove_parts:
 f = open(directory, "r")
 
 # set the date and time for the csv and unmatched url files
-datetimestr = datetime.now()
+date_time_str = datetime.now()
 
 # Format the date time to 2023_10_12__19_36_47
-dt_string = datetimestr.strftime("%Y_%m_%d__%H_%M_%S")
+dt_string = date_time_str.strftime("%Y_%m_%d__%H_%M_%S")
 
 # Take the source data file name and change it with the date time string + .csv 
 csvDirectory = re.sub('.txt', "_" + dt_string + '.csv', directory)
 
-# Take the souce data file name and change it with the data time string
+# Take the sauce data file name and change it with the data time string
 notFoundDirectory = re.sub('.txt', "_Unmatched_URLS_" + dt_string + ".txt", directory)
 
 # nf = new file - this will contain ALL the redirected url's
@@ -93,11 +92,11 @@ all_key_words = wks_keywords.get_all_records()
 for l in f:
     # Check the read line if it contains "?" we skip it 
     if l.find("?") == -1:
-        # The read line has a \n = new line or ENTER at the end and we are removing that  caracter
+        # The read line has a \n = new line or ENTER at the end and we are removing that character
         new_l = re.sub("\n", "", l)
         # If the remove part flag (line 60) is true we need to remove the part that has to be removed from the source url
         if do_remove_part:
-            # Sub = substitute the remove part with an empty strin
+            # Sub = substitute the remove part with an empty string
             new_l = re.sub(remove_part, "", new_l)
             # ensure the new url is a lower case url
             lower_l = new_l.lower()
@@ -108,7 +107,7 @@ for l in f:
             if kw.get('WEBSITE').upper() == working_website:
                 # we have to set this flag false so that when we reset the flag
                 found_keyword = False
-                # now we chech the source url if the keyword is found
+                # now we check the source url if the keyword is found
                 if lower_l.find(kw.get('KEYWORD').lower()) != -1:
                     # get the redirect url 
                     destinationURL = kw.get('URL')
@@ -125,7 +124,7 @@ for l in f:
             notFoundFile.write(lower_l + "\n")
             # Loop through the keywords to find the default key word
             for kw in all_key_words:
-                # Check the wesite name is the working website name
+                # Check the website name is the working website name
                 if kw.get('WEBSITE').upper() == working_website:
                     # Check if there is a default key word
                     if kw.get('DEFAULT') == 'TRUE':
