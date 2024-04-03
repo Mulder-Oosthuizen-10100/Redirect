@@ -1,7 +1,11 @@
 # Import the needed libraries
 import gspread # Integrate to google sheets
 import re # String manipulation
-from datetime import datetime # File date time 
+from datetime import datetime # File date time
+from build import gui
+
+
+gui.window.mainloop()
 
 # sa = service account - this account is used to access the google sheets document
 sa = gspread.service_account()
