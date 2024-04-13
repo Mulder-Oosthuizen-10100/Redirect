@@ -1,2 +1,3 @@
 gspread
 pyinstaller
+Pillow
