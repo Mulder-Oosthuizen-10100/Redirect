@@ -20,7 +20,7 @@ class ViewConstantsNamespace:
     # Font Family
     @property
     def LabelFontFamily(self):
-        return "Currier New"
+        return "JetBrains Mono"
     
     # Font Size
     @property
