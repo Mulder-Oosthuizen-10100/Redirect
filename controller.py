@@ -1,8 +1,27 @@
 from view import RedirectView
+from model import RedirectModel
 
 class RedirectController:
     def __init__(self):
-        self.view = RedirectView(self)
+        # self.model = RedirectModel(self)
+        self.view = RedirectView(
+            self,
+            # lst_dict_websites=self.model.lst_dict_websites,
+            lst_dict_websites = [
+                {"WEBSITE":"BagsOfFlags"},
+                {"WEBSITE":"Bohocondo"},
+                {"WEBSITE":"GaiterGoblin"},
+                {"WEBSITE":"MyManFur"},
+                {"WEBSITE":"OurCBDPantry"},
+                {"WEBSITE":"SandmanShop"},
+                {"WEBSITE":"BagsOfFlags"},
+                {"WEBSITE":"Bohocondo"},
+                {"WEBSITE":"GaiterGoblin"},
+                {"WEBSITE":"MyManFur"},
+                {"WEBSITE":"OurCBDPantry"},
+                {"WEBSITE":"SandmanShop"},
+            ],
+        )
         self.view.root.mainloop()
     
     def set_source_file_name(self, file_name):

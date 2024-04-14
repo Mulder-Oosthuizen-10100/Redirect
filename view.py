@@ -8,47 +8,52 @@ ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("dark-blue")
 
 class ShopListFrame(ctk.CTkScrollableFrame):
-    def __init__(self, master, controller, lst_shop_names=["Shop 1", "Shop 2", "Shop 3", "Shop 4", "Shop 5"], **kwargs):
+    def __init__(
+            self,
+            master,
+            controller,
+            lst_dict_websites,
+            **kwargs
+        ):
         super().__init__(master, **kwargs)
 
         self.controller = controller
-        self.rdbtn_variable = ctk.IntVar(value=0)
-        self.rdbtn_list = []
+        self.grid_columnconfigure(0, weight=1)
+        self.lst_rdbtn_shops = []
+        self.rdbtn_var = ctk.StringVar(value="off")
         self.row_count = 0
-        for shop_name in lst_shop_names:
-            itm = ctk.CTkRadioButton(
-                master=self,
-                text=shop_name,
-                command=self.shop_selected(), #self.controller.set_shop_name(self.rdbtn_variable.get()),
-                # command=lambda:self.rdbtn_variable.get(),
-                variable=self.rdbtn_variable,
-                value=self.row_count,
-            ).grid(
-                row=self.row_count,
-                column=0,
+
+        for shop in lst_dict_websites:
+            self.grid_rowconfigure(self.row_count, weight=1)
+            self.lst_rdbtn_shops.append(
+                ctk.CTkRadioButton(
+                    master=self,
+                    text=shop.get('WEBSITE'),
+                    font=('JetBrains Mono',14),
+                    variable=self.rdbtn_var,
+                    value=shop.get('WEBSITE'),
+                    command=self.rdbtn_selected,
+                ).grid(
+                    row=self.row_count,
+                    column=0,
+                    pady=(20,0),
+                    padx=20,
+                    sticky='ew',
+                )
             )
-            self.rdbtn_list.append(itm)
             self.row_count += 1
 
-        # def radiobutton_event():
-        #     print("radiobutton toggled, current value:", radio_var.get())
-
-        # radio_var = tkinter.IntVar(value=0)
-        # radiobutton_1 = customtkinter.CTkRadioButton(app, text="CTkRadioButton 1",
-        #                                             command=radiobutton_event, variable= radio_var, value=1)
-        # radiobutton_2 = customtkinter.CTkRadioButton(app, text="CTkRadioButton 2",
-        #                                             command=radiobutton_event, variable= radio_var, value=2)        
-
-    
-    def shop_selected(self):
-        self.controller.set_shop_name(self.rdbtn_variable.get())
-        # print(f"value: {self.rdbtn_variable.get()}")
+    def rdbtn_selected(self):
+        self.controller.set_shop_name(
+            self.rdbtn_var.get()
+        )
 
 class SourceFolderLocationFrame(ctk.CTkFrame):
     def __init__(self, master, controller, **kwargs):
         super().__init__(master, **kwargs)
 
         self.controller = controller
+        self.edt_text_var = ctk.StringVar(value="c:\\redirect\\source_folder\\source.txt")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure((0,1,), weight=1)
 
@@ -67,6 +72,7 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         self.edt_source_folder_location = ctk.CTkEntry(
             master=self,
             font=('JetBrains Mono',14),
+            textvariable=self.edt_text_var,
         ).grid(
             row=1,
             column=0,
@@ -102,12 +108,17 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         )
         if file_name:
             self.controller.set_source_file_name(file_name)
+            self.update_edt_source_folder_location(file_name)
+
+    def update_edt_source_folder_location(self, new_text=""):
+        self.edt_text_var.set(new_text)
 
 class DestinationFolderLocationFrame(ctk.CTkFrame):
     def __init__(self, master, controller, **kwargs):
         super().__init__(master, **kwargs)
 
         self.controller = controller
+        self.edt_text_var = ctk.StringVar(value="c:\\redirect\\redirects\\")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure((0,1,), weight=1)
 
@@ -126,6 +137,7 @@ class DestinationFolderLocationFrame(ctk.CTkFrame):
         self.edt_destination_folder_location = ctk.CTkEntry(
             master=self,
             font=('JetBrains Mono',14),
+            textvariable=self.edt_text_var,
         ).grid(
             row=1,
             column=0,
@@ -157,9 +169,19 @@ class DestinationFolderLocationFrame(ctk.CTkFrame):
         folder = filedialog.askdirectory()
         if folder:
             self.controller.set_destination_folder(folder)
+            self.update_edt_destination_folder_location(folder)
+    
+    def update_edt_destination_folder_location(self, new_text=""):
+        self.edt_text_var.set(new_text)
 
 class MainWindow(ctk.CTk):
-    def __init__(self, controller, *args, **kwargs):
+    def __init__(
+            self,
+            controller,
+            lst_dict_websites,
+            *args,
+            **kwargs
+        ):
         super().__init__(*args, **kwargs)
        
         self.controller = controller
@@ -191,6 +213,7 @@ class MainWindow(ctk.CTk):
         self.frm_shop_list = ShopListFrame(
             controller=controller,
             master=self,
+            lst_dict_websites=lst_dict_websites,
             corner_radius=16,
         ).grid(
             row=1,
@@ -242,6 +265,13 @@ class MainWindow(ctk.CTk):
 
 # MVC - View Class
 class RedirectView:
-    def __init__(self, controller):
+    def __init__(
+            self,
+            controller,
+            lst_dict_websites,
+        ):
         self.controller = controller
-        self.root = MainWindow(controller=controller)
+        self.root = MainWindow(
+            controller=controller,
+            lst_dict_websites=lst_dict_websites,
+        )
