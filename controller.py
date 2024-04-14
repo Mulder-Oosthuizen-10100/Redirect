@@ -3,24 +3,24 @@ from model import RedirectModel
 
 class RedirectController:
     def __init__(self):
-        # self.model = RedirectModel(self)
+        self.model = RedirectModel(self)
         self.view = RedirectView(
             self,
-            # lst_dict_websites=self.model.lst_dict_websites,
-            lst_dict_websites = [
-                {"WEBSITE":"BagsOfFlags"},
-                {"WEBSITE":"Bohocondo"},
-                {"WEBSITE":"GaiterGoblin"},
-                {"WEBSITE":"MyManFur"},
-                {"WEBSITE":"OurCBDPantry"},
-                {"WEBSITE":"SandmanShop"},
-                {"WEBSITE":"BagsOfFlags"},
-                {"WEBSITE":"Bohocondo"},
-                {"WEBSITE":"GaiterGoblin"},
-                {"WEBSITE":"MyManFur"},
-                {"WEBSITE":"OurCBDPantry"},
-                {"WEBSITE":"SandmanShop"},
-            ],
+            lst_dict_websites=self.model.lst_dict_websites,
+            # lst_dict_websites = [
+            #     {"WEBSITE":"BagsOfFlags"},
+            #     {"WEBSITE":"Bohocondo"},
+            #     {"WEBSITE":"GaiterGoblin"},
+            #     {"WEBSITE":"MyManFur"},
+            #     {"WEBSITE":"OurCBDPantry"},
+            #     {"WEBSITE":"SandmanShop"},
+            #     {"WEBSITE":"BagsOfFlags"},
+            #     {"WEBSITE":"Bohocondo"},
+            #     {"WEBSITE":"GaiterGoblin"},
+            #     {"WEBSITE":"MyManFur"},
+            #     {"WEBSITE":"OurCBDPantry"},
+            #     {"WEBSITE":"SandmanShop"},
+            # ],
         )
         self.view.root.mainloop()
     
@@ -36,6 +36,11 @@ class RedirectController:
 
     def generate_csv_file(self):
         print("Generating the file")
+        self.model.generate_csv_file(
+            source_file_name=self.source_file_name,
+            destination_folder=self.destination_folder,
+            shop_name=self.shop_name,
+        )
 
 if __name__ == "__main__":
     controller = RedirectController()

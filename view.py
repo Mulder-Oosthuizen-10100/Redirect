@@ -53,7 +53,7 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         super().__init__(master, **kwargs)
 
         self.controller = controller
-        self.edt_text_var = ctk.StringVar(value="c:\\redirect\\source_folder\\source.txt")
+        self.edt_text_var = ctk.StringVar(value="c:/redirect/source_folder/source.txt")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure((0,1,), weight=1)
 
@@ -118,7 +118,7 @@ class DestinationFolderLocationFrame(ctk.CTkFrame):
         super().__init__(master, **kwargs)
 
         self.controller = controller
-        self.edt_text_var = ctk.StringVar(value="c:\\redirect\\redirects\\")
+        self.edt_text_var = ctk.StringVar(value="c:/redirect/redirects")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure((0,1,), weight=1)
 
