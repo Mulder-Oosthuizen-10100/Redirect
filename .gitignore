@@ -1,4 +1,8 @@
 /.venv
 /.vscode
 __pycache__
-token.txt
+/build
+/dist
+*.txt
+*.exe
+*.spec

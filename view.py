@@ -82,7 +82,7 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         )
 
         self.img_source_folder_location = ctk.CTkImage(
-            dark_image=Image.open("./images/folder_location.png"),
+            dark_image=Image.open(self.controller.resource_path(".\\images\\folder_location.png")),
             size=(20,20),
         )
 
@@ -147,7 +147,7 @@ class DestinationFolderLocationFrame(ctk.CTkFrame):
         )
 
         self.img_destination_folder_location = ctk.CTkImage(
-            dark_image=Image.open("./images/folder_location.png"),
+            dark_image=Image.open(self.controller.resource_path(".\\images\\folder_location.png")),
             size=(20,20),
         )
 
@@ -187,7 +187,7 @@ class MainWindow(ctk.CTk):
         self.controller = controller
         self.title("Redirect 404 URLs")
         self.geometry("1000x600")
-        self.iconbitmap("Images/RedirectLogo.ico")
+        self.iconbitmap(self.controller.resource_path("images\\RedirectLogo.ico"))
         self.resizable(
             height=False,
             width=False,
@@ -261,7 +261,7 @@ class MainWindow(ctk.CTk):
             column=1,
             padx=60,
             pady=(0,60),
-        )        
+        )
 
 # MVC - View Class
 class RedirectView:
@@ -271,7 +271,9 @@ class RedirectView:
             lst_dict_websites,
         ):
         self.controller = controller
+        self.lst_dict_websites=lst_dict_websites
         self.root = MainWindow(
             controller=controller,
             lst_dict_websites=lst_dict_websites,
         )
+        self.root.eval('tk::PlaceWindow . center')

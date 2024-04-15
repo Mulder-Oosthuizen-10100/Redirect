@@ -1,5 +1,6 @@
 from view import RedirectView
 from model import RedirectModel
+import os, sys
 
 class RedirectController:
     def __init__(self):
@@ -7,20 +8,6 @@ class RedirectController:
         self.view = RedirectView(
             self,
             lst_dict_websites=self.model.lst_dict_websites,
-            # lst_dict_websites = [
-            #     {"WEBSITE":"BagsOfFlags"},
-            #     {"WEBSITE":"Bohocondo"},
-            #     {"WEBSITE":"GaiterGoblin"},
-            #     {"WEBSITE":"MyManFur"},
-            #     {"WEBSITE":"OurCBDPantry"},
-            #     {"WEBSITE":"SandmanShop"},
-            #     {"WEBSITE":"BagsOfFlags"},
-            #     {"WEBSITE":"Bohocondo"},
-            #     {"WEBSITE":"GaiterGoblin"},
-            #     {"WEBSITE":"MyManFur"},
-            #     {"WEBSITE":"OurCBDPantry"},
-            #     {"WEBSITE":"SandmanShop"},
-            # ],
         )
         self.view.root.mainloop()
     
@@ -41,6 +28,16 @@ class RedirectController:
             destination_folder=self.destination_folder,
             shop_name=self.shop_name,
         )
+    
+    def resource_path(self, relative_path):
+        """ Get absolute path to resource, works for dev and for PyInstaller """
+        try:
+            # PyInstaller creates a temp folder and stores path in _MEIPASS
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
 
 if __name__ == "__main__":
     controller = RedirectController()
