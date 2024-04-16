@@ -80,7 +80,7 @@ csvDirectory = re.sub('.txt', "_" + dt_string + '.csv', directory)
 notFoundDirectory = re.sub('.txt', "_Unmatched_URLS_" + dt_string + ".txt", directory)
 
 # nf = new file - this will contain ALL the redirected url's
-nf = open(csvDirectory, 'a')
+nf = open(csvDirectory, 'a', encoding="utf8")
 
 # this file will contain all the url's that received the default url
 notFoundFile = open(notFoundDirectory, 'a')

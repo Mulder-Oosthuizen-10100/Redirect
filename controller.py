@@ -12,27 +12,20 @@ class RedirectController:
         self.view.root.mainloop()
     
     def set_source_file_name(self, file_name):
-        self.source_file_name = file_name
+        self.model.set_source_file_name(file_name=file_name)
     
-    def set_destination_folder(self, folder):
-        self.destination_folder = folder
+    def set_redirect_folder_name(self, folder):
+        self.model.set_redirect_folder_name(folder_name=folder)
     
     def set_shop_name(self, shop_name):
-        self.shop_name = shop_name
-        print(self.shop_name)
+        self.model.set_shop_name(shop_name=shop_name)
 
     def generate_csv_file(self):
-        print("Generating the file")
-        self.model.generate_csv_file(
-            source_file_name=self.source_file_name,
-            destination_folder=self.destination_folder,
-            shop_name=self.shop_name,
-        )
+        self.model.generate_csv_file()
     
     def resource_path(self, relative_path):
         """ Get absolute path to resource, works for dev and for PyInstaller """
         try:
-            # PyInstaller creates a temp folder and stores path in _MEIPASS
             base_path = sys._MEIPASS
         except Exception:
             base_path = os.path.abspath(".")

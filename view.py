@@ -53,7 +53,8 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         super().__init__(master, **kwargs)
 
         self.controller = controller
-        self.edt_text_var = ctk.StringVar(value="c:/redirect/source_folder/source.txt")
+        self.edt_text_var = ctk.StringVar(value="c:/projects/redirect/source.txt")
+        self.controller.set_source_file_name(self.edt_text_var.get())
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure((0,1,), weight=1)
 
@@ -113,18 +114,19 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
     def update_edt_source_folder_location(self, new_text=""):
         self.edt_text_var.set(new_text)
 
-class DestinationFolderLocationFrame(ctk.CTkFrame):
+class RedirectFolderLocationFrame(ctk.CTkFrame):
     def __init__(self, master, controller, **kwargs):
         super().__init__(master, **kwargs)
 
         self.controller = controller
-        self.edt_text_var = ctk.StringVar(value="c:/redirect/redirects")
+        self.edt_text_var = ctk.StringVar(value="c:/projects/redirect/redirects")
+        self.controller.set_redirect_folder_name(self.edt_text_var.get())
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure((0,1,), weight=1)
 
-        self.lbl_destination_folder_location = ctk.CTkLabel(
+        self.lbl_redirect_folder_location = ctk.CTkLabel(
             master=self,
-            text="Destination Folder Location",
+            text="Redirect Folder Location",
             font=('JetBrains Mono',18),
         ).grid(
             row=0,
@@ -134,7 +136,7 @@ class DestinationFolderLocationFrame(ctk.CTkFrame):
             sticky="w",
         )
 
-        self.edt_destination_folder_location = ctk.CTkEntry(
+        self.edt_redirect_folder_location = ctk.CTkEntry(
             master=self,
             font=('JetBrains Mono',14),
             textvariable=self.edt_text_var,
@@ -146,16 +148,16 @@ class DestinationFolderLocationFrame(ctk.CTkFrame):
             pady=(0,10),
         )
 
-        self.img_destination_folder_location = ctk.CTkImage(
+        self.img_redirect_folder_location = ctk.CTkImage(
             dark_image=Image.open(self.controller.resource_path(".\\images\\folder_location.png")),
             size=(20,20),
         )
 
-        self.btn_destination_folder_location = ctk.CTkButton(
+        self.btn_redirect_folder_location = ctk.CTkButton(
             master=self,
-            image=self.img_destination_folder_location,
+            image=self.img_redirect_folder_location,
             text="",
-            command=self.open_destination_folder,
+            command=self.open_redirect_folder,
             width=20,
             height=20,
         ).grid(
@@ -165,13 +167,13 @@ class DestinationFolderLocationFrame(ctk.CTkFrame):
             pady=(0,10),
         )
     
-    def open_destination_folder(self):
+    def open_redirect_folder(self):
         folder = filedialog.askdirectory()
         if folder:
-            self.controller.set_destination_folder(folder)
-            self.update_edt_destination_folder_location(folder)
+            self.controller.set_redirect_folder_name(folder)
+            self.update_edt_redirect_folder_location(folder)
     
-    def update_edt_destination_folder_location(self, new_text=""):
+    def update_edt_redirect_folder_location(self, new_text=""):
         self.edt_text_var.set(new_text)
 
 class MainWindow(ctk.CTk):
@@ -236,7 +238,7 @@ class MainWindow(ctk.CTk):
             sticky="nsew",
         )
 
-        self.frm_destination_location = DestinationFolderLocationFrame(
+        self.frm_redirect_location = RedirectFolderLocationFrame(
             controller=controller,
             master=self,
             corner_radius=16,
@@ -255,7 +257,7 @@ class MainWindow(ctk.CTk):
             font=('JetBrains Mono',18),
             command=self.controller.generate_csv_file,
             width=100,
-            height=50,            
+            height=50,
         ).grid(
             row=3,
             column=1,
