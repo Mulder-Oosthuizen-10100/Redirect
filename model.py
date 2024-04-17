@@ -1,5 +1,5 @@
 import gspread
-# import re
+import os
 from datetime import datetime
 
 
@@ -18,7 +18,6 @@ class RedirectModel():
         self.lst_dict_keywords = self.worksheet_keywords.get_all_records()
     
     def set_source_file_name(self, file_name):
-        print("set source file name:", file_name)
         self.source_file_name = file_name
     
     def set_redirect_folder_name(self, folder_name):
@@ -34,16 +33,15 @@ class RedirectModel():
     def set_files(self,):
         self.source_file = open(self.source_file_name, 'r')
 
-        self.redirect_file_name = str.replace(self.source_file_name,'.txt','_redirect.csv')
+        date_time = datetime.now()
+        date_time_string = date_time.strftime("%Y_%m_%d__%H_%M_%S")
+        os.makedirs(self.redirect_folder_name + '/' + self.shop_name, exist_ok=True)
+
+        self.redirect_file_name = self.redirect_folder_name + '/' + self.shop_name + '/' + f'redirect_{date_time_string}.csv'
         self.redirect_file = open(self.redirect_file_name, 'a')
 
-        self.unmatched_redirect_file_name = str.replace(self.source_file_name, '.txt', '_unmatched_urls.txt')
+        self.unmatched_redirect_file_name = self.redirect_folder_name + '/' + self.shop_name + '/' + f'unmatched_urls_{date_time_string}.txt'
         self.unmatched_redirect_file = open(self.unmatched_redirect_file_name, 'a')
-
-        # c:\projects\redirect\source.txt
-        # c:\projects\redirect\source_redirect.csv
-        # date_time_str = datetime.now()
-        # dt_string = date_time_str.strftime("%Y_%m_%d__%H_%M_%S")
 
     def get_remove_part(self, shop_name):
         for website_remove_part in self.lst_dict_remove_parts:
@@ -51,28 +49,32 @@ class RedirectModel():
                 remove_part = website_remove_part.get("REMOVE_PART")
                 if remove_part:
                     return remove_part
-            break
+                else:
+                    return ""
     
-    def internal_generate_csv_file(self,):
+    def internal_generate_csv_file(self):
         for line in self.source_file:
-            if line.find("?") == -1:
-                new_line = str.replace(line,"\n","")
-                self.remove_part = self.get_remove_part(self.shop_name)
-                if self.remove_part:
-                    new_line = str.replace(new_line, self.remove_part, "")
-                lower_line = new_line.lower()
+            line = str.replace(line, "\n", "")
+            line = str.replace(line, "\t", "")
+            line = str.replace(
+                line,
+                self.get_remove_part(self.shop_name),
+                ""
+            )
+            line = line.lower()
+
+            for dict_keyword in self.lst_dict_keywords:
+                if dict_keyword.get('WEBSITE') == self.shop_name:
+                    found_keyword = False
+                    if dict_keyword.get('KEYWORD').lower() in line:
+                        self.redirect_file.write(line + '*,' + dict_keyword.get('URL') + "\n")
+                        found_keyword = True
+                        break
+
+            if not found_keyword:
+                self.unmatched_redirect_file.write(line + "\n")
                 for dict_keyword in self.lst_dict_keywords:
                     if dict_keyword.get('WEBSITE') == self.shop_name:
-                        found_keyword = False
-                        if lower_line.find(dict_keyword.get('KEYWORD').lower()) != -1:
-                            self.redirect_file.write(lower_line + '*,' + dict_keyword.get('URL') + "\n")
-                            found_keyword = True
+                        if dict_keyword.get('DEFAULT') == 'TRUE':
+                            self.redirect_file.write(line + '*,' + dict_keyword.get('URL') + "\n")
                             break
-
-                if not found_keyword:
-                    self.unmatched_redirect_file.write(lower_line + "\n")
-                    for dict_keyword in self.lst_dict_keywords:
-                        if dict_keyword.get('WEBSITE') == self.shop_name:
-                            if dict_keyword.get('DEFAULT') == 'TRUE':
-                                self.unmatched_redirect_file.write(lower_line + '*,' + dict_keyword.get('URL') + "\n")
-                                break
