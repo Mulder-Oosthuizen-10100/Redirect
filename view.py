@@ -265,17 +265,69 @@ class MainWindow(ctk.CTk):
             pady=(0,60),
         )
 
+class SplashWindow(ctk.CTk):
+    def __init__(
+            self,
+            controller,
+            *args,
+            **kwargs
+        ):
+        super().__init__(*args, **kwargs)
+       
+        self.controller = controller
+        self.title("Redirect 404 URLs")
+        self.geometry("1000x600")
+        self.iconbitmap(self.controller.resource_path("images\\RedirectLogo.ico"))
+        self.resizable(
+            height=False,
+            width=False,
+        )
+        
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+
+        self.lbl_heading = ctk.CTkLabel(
+            master=self,
+            text="Redirect 404 URLs",
+            font=(ViewConstants.LabelFontFamily, ViewConstants.LabelFontSize),
+        ).grid(
+            row=0,
+            column=0,
+            pady=20,
+            sticky="nesw",
+        )
+
 # MVC - View Class
 class RedirectView:
     def __init__(
             self,
             controller,
             lst_dict_websites,
+            is_splash=True,
         ):
         self.controller = controller
-        self.lst_dict_websites=lst_dict_websites
-        self.root = MainWindow(
-            controller=controller,
-            lst_dict_websites=lst_dict_websites,
-        )
+        self.lst_dict_websites = lst_dict_websites
+        self.is_splash = is_splash
+        self.create_window()
+    
+    # def refresh(self):
+        # self.root.destroy()
+        # self.create_window()
+
+    def create_window(self):
+        if self.is_splash:
+            self.root = SplashWindow(
+                controller=self.controller,
+            )
+        else:
+            self.root = MainWindow(
+                controller=self.controller,
+                lst_dict_websites=self.lst_dict_websites,
+            )
         self.root.eval('tk::PlaceWindow . center')
+    
+    # def destroy(self):
+        # self.root.destroy()
+    
+    # def hide(self):
+        # self.root.withdraw()
