@@ -12,7 +12,7 @@ class ShopListFrame(ctk.CTkScrollableFrame):
             self,
             master,
             controller,
-            lst_dict_websites,
+            # lst_dict_websites,
             **kwargs
         ):
         super().__init__(master, **kwargs)
@@ -23,6 +23,19 @@ class ShopListFrame(ctk.CTkScrollableFrame):
         self.rdbtn_var = ctk.StringVar(value="off")
         self.row_count = 0
 
+        self.lbl_loading = ctk.CTkLabel(
+            master=self,
+            text="Loading",
+            font=('JetBrains Mono', 18),
+        )
+
+        self.lbl_loading.grid(
+            row=0,
+            column=0,
+        )
+
+    def add_shops(self, lst_dict_websites):
+        self.lbl_loading.destroy()
         for shop in lst_dict_websites:
             self.grid_rowconfigure(self.row_count, weight=1)
             self.lst_rdbtn_shops.append(
@@ -180,7 +193,7 @@ class MainWindow(ctk.CTk):
     def __init__(
             self,
             controller,
-            lst_dict_websites,
+            # lst_dict_websites,
             *args,
             **kwargs
         ):
@@ -215,9 +228,11 @@ class MainWindow(ctk.CTk):
         self.frm_shop_list = ShopListFrame(
             controller=controller,
             master=self,
-            lst_dict_websites=lst_dict_websites,
+            # lst_dict_websites=lst_dict_websites,
             corner_radius=16,
-        ).grid(
+        )
+        
+        self.frm_shop_list.grid(
             row=1,
             rowspan=3,
             column=0,
@@ -302,32 +317,125 @@ class RedirectView:
     def __init__(
             self,
             controller,
-            lst_dict_websites,
-            is_splash=True,
+            # lst_dict_websites,
+            # is_splash=True,
         ):
         self.controller = controller
-        self.lst_dict_websites = lst_dict_websites
-        self.is_splash = is_splash
-        self.create_window()
+        # self.lst_dict_websites = lst_dict_websites
+        # self.is_splash = is_splash
+        # self.create_window()
     
     # def refresh(self):
         # self.root.destroy()
         # self.create_window()
 
-    def create_window(self):
-        if self.is_splash:
-            self.root = SplashWindow(
-                controller=self.controller,
-            )
-        else:
-            self.root = MainWindow(
-                controller=self.controller,
-                lst_dict_websites=self.lst_dict_websites,
-            )
-        self.root.eval('tk::PlaceWindow . center')
+    # def create_window(self):
+        # if self.is_splash:
+            # self.root = SplashWindow(
+                # controller=self.controller,
+            # )
+        # else:
+        self.root = MainWindow(
+            controller=self.controller,
+                # lst_dict_websites=self.lst_dict_websites,
+        )
+        # self.root.eval('tk::PlaceWindow . center')
     
     # def destroy(self):
         # self.root.destroy()
     
     # def hide(self):
         # self.root.withdraw()
+
+
+
+# class MainWindow(ctk.CTk):
+#     pass
+
+# class MainView():
+#     pass
+
+# class RedirectTopLevelWindow(ctk.CTkToplevel):
+#     pass
+
+# class RedirectTopLevelView():
+#     pass
+
+
+# class MainWindow(ctk.CTk):
+#     def __init__(
+#             self,
+#             controller,
+#             *args,
+#             **kwargs
+#         ):
+#         super().__init__(*args, **kwargs)
+       
+#         self.controller = controller
+#         self.title("Redirect 404 URLs")
+#         self.geometry("1000x600")
+#         # self.iconbitmap(self.controller.resource_path("images\\RedirectLogo.ico"))
+#         self.resizable(
+#             height=False,
+#             width=False,
+#         )
+        
+#         self.grid_columnconfigure(0, weight=6)
+#         self.grid_columnconfigure(1, weight=1)
+#         self.grid_rowconfigure(0, weight=0)
+
+#         self.lbl_heading = ctk.CTkLabel(
+#             master=self,
+#             text="Redirect 404 URLs",
+#             font=(ViewConstants.LabelFontFamily, ViewConstants.LabelFontSize),
+#         ).grid(
+#             row=0,
+#             column=0,
+#             columnspan=2,
+#             pady=20,
+#             sticky="nesw",
+#         )
+
+# class MainView():
+#     def __init__(self, controller):
+#         self.controller = controller       
+#         self.root = MainWindow(controller=self)
+
+# class SplashWindow(ctk.CTk):
+#     def __init__(
+#             self,
+#             controller,
+#             *args,
+#             **kwargs
+#         ):
+#         super().__init__(*args, **kwargs)
+       
+#         self.controller = controller
+#         self.title("Loading")
+#         self.geometry("1000x600")
+#         # self.iconbitmap(self.controller.resource_path("images\\RedirectLogo.ico"))
+#         self.resizable(
+#             height=False,
+#             width=False,
+#         )
+        
+#         self.grid_columnconfigure(0, weight=6)
+#         self.grid_columnconfigure(1, weight=1)
+#         self.grid_rowconfigure(0, weight=0)
+
+#         self.lbl_heading = ctk.CTkLabel(
+#             master=self,
+#             text="Loading",
+#             font=(ViewConstants.LabelFontFamily, ViewConstants.LabelFontSize),
+#         ).grid(
+#             row=0,
+#             column=0,
+#             columnspan=2,
+#             pady=20,
+#             sticky="nesw",
+#         )
+
+# class SplashView():
+#     def __init__(self, controller):
+#         self.controller = controller       
+#         self.root = SplashWindow(controller=self)
