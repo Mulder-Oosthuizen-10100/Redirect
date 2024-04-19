@@ -341,11 +341,14 @@ class RedirectView:
         )
         # self.root.eval('tk::PlaceWindow . center')
     
+    def show_message(self, text="OK"):
+        pass
     # def destroy(self):
         # self.root.destroy()
     
     # def hide(self):
         # self.root.withdraw()
+
 
 
 

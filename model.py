@@ -41,6 +41,7 @@ class RedirectModel():
     def generate_csv_file(self,):
         self.set_files()
         self.internal_generate_csv_file()
+        return True
 
     def set_files(self,):
         self.source_file = open(self.source_file_name, 'r')

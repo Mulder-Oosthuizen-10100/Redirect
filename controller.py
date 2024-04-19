@@ -112,7 +112,10 @@ class RedirectController:
         self.model.set_shop_name(shop_name=shop_name)
 
     def generate_csv_file(self):
-        self.model.generate_csv_file()
+        if self.model.generate_csv_file():
+            self.view.show_message(
+                text="Redirect file Generated successfully!",                
+            )
     
     def resource_path(self, relative_path):
         """ Get absolute path to resource, works for dev and for PyInstaller """
