@@ -7,6 +7,17 @@ class RedirectModel():
     def __init__(self, controller):
         self.controller = controller
 
+        # self.service_account = gspread.service_account()
+        # self.sheet = self.service_account.open('WEBSITE_DATA')
+        # self.worksheet_websites = self.sheet.worksheet('WEBSITES')
+        # self.worksheet_keywords = self.sheet.worksheet('KEYWORDS')
+        # self.worksheet_remove_part = self.sheet.worksheet('REMOVE_PARTS')
+
+        # self.lst_dict_websites = self.worksheet_websites.get_all_records()
+        # self.lst_dict_remove_parts = self.worksheet_remove_part.get_all_records()
+        # self.lst_dict_keywords = self.worksheet_keywords.get_all_records()
+    
+    def set_model_data(self):
         self.service_account = gspread.service_account()
         self.sheet = self.service_account.open('WEBSITE_DATA')
         self.worksheet_websites = self.sheet.worksheet('WEBSITES')
@@ -16,6 +27,7 @@ class RedirectModel():
         self.lst_dict_websites = self.worksheet_websites.get_all_records()
         self.lst_dict_remove_parts = self.worksheet_remove_part.get_all_records()
         self.lst_dict_keywords = self.worksheet_keywords.get_all_records()
+
     
     def set_source_file_name(self, file_name):
         self.source_file_name = file_name
