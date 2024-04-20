@@ -39,11 +39,12 @@ class RedirectModel():
         self.shop_name = shop_name
 
     def generate_csv_file(self,):
-        self.set_files()
+        self.open_files()
         self.internal_generate_csv_file()
+        self.close_files()
         return True
 
-    def set_files(self,):
+    def open_files(self,):
         self.source_file = open(self.source_file_name, 'r')
 
         date_time = datetime.now()
@@ -55,6 +56,11 @@ class RedirectModel():
 
         self.unmatched_redirect_file_name = self.redirect_folder_name + '/' + self.shop_name + '/' + f'unmatched_urls_{date_time_string}.txt'
         self.unmatched_redirect_file = open(self.unmatched_redirect_file_name, 'a')
+
+    def close_files(self):
+        self.source_file.close()
+        self.redirect_file.close()
+        self.unmatched_redirect_file.close()
 
     def get_remove_part(self, shop_name):
         for website_remove_part in self.lst_dict_remove_parts:
