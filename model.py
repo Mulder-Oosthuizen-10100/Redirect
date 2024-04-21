@@ -1,21 +1,12 @@
-import gspread
-import os
+import gspread, os
 from datetime import datetime
 
-
 class RedirectModel():
-    def __init__(self, controller):
+    def __init__(
+        self,
+        controller
+    ):
         self.controller = controller
-
-        # self.service_account = gspread.service_account()
-        # self.sheet = self.service_account.open('WEBSITE_DATA')
-        # self.worksheet_websites = self.sheet.worksheet('WEBSITES')
-        # self.worksheet_keywords = self.sheet.worksheet('KEYWORDS')
-        # self.worksheet_remove_part = self.sheet.worksheet('REMOVE_PARTS')
-
-        # self.lst_dict_websites = self.worksheet_websites.get_all_records()
-        # self.lst_dict_remove_parts = self.worksheet_remove_part.get_all_records()
-        # self.lst_dict_keywords = self.worksheet_keywords.get_all_records()
     
     def set_model_data(self):
         self.service_account = gspread.service_account()
@@ -28,21 +19,50 @@ class RedirectModel():
         self.lst_dict_remove_parts = self.worksheet_remove_part.get_all_records()
         self.lst_dict_keywords = self.worksheet_keywords.get_all_records()
 
-    
-    def set_source_file_name(self, file_name):
-        self.source_file_name = file_name
-    
+    def set_source_file_name(
+        self,
+        file_name,
+        show_error_message,
+        # log_error_message,
+    ) -> bool:
+        if self.validate_file_name(
+            file_name=file_name,
+            show_error_message=show_error_message,
+        ):
+            self.source_file_name = file_name
+
     def set_redirect_folder_name(self, folder_name):
         self.redirect_folder_name = folder_name
 
     def set_shop_name(self, shop_name):
         self.shop_name = shop_name
 
-    def generate_csv_file(self,):
-        self.open_files()
-        self.internal_generate_csv_file()
-        self.close_files()
+    def generate_csv_file(self):
+        self.validate_all_variables()
+        # self.open_files()
+        # self.internal_generate_csv_file()
+        # self.close_files()
         return True
+    
+    def validate_all_variables(self):
+        if self.validate_file_name(
+            file_name=self.source_file_name,
+            show_error_message=True,
+        ):
+            self.open_file(
+                file=self.source_file,
+                file_name=self.source_file_name
+            )
+
+    def open_file(
+        self,
+        file,
+        file_name,
+    ):
+        try:
+            file = open(file_name, 'r')
+        except Exception as e:
+            self.controller.open_message(f"An Exception Occurred: {e}")
 
     def open_files(self,):
         self.source_file = open(self.source_file_name, 'r')
@@ -58,6 +78,7 @@ class RedirectModel():
         self.unmatched_redirect_file = open(self.unmatched_redirect_file_name, 'a')
 
     def close_files(self):
+        # check if none
         self.source_file.close()
         self.redirect_file.close()
         self.unmatched_redirect_file.close()
@@ -97,3 +118,28 @@ class RedirectModel():
                         if dict_keyword.get('DEFAULT') == 'TRUE':
                             self.redirect_file.write(line + '*,' + dict_keyword.get('URL') + "\n")
                             break
+
+# Class internal Functions
+    def validate_file_name(
+        self,
+        file_name,
+        show_error_message,
+    ) -> bool:
+        try:
+            if os.stat(
+                path=file_name
+            ).st_size > 0:
+                if show_error_message:
+                    self.controller.open_message("Source File: OK")
+                    print("Source File: OK")
+                return True
+            else:
+                if show_error_message:
+                    self.controller.open_message("Source File: EMPTY")
+                    print("Source File: EMPTY")
+                return False
+        except OSError:
+            if show_error_message:
+                self.controller.open_message("Source File: DOES NOT EXIST")
+                print("Source File: DOES NOT EXIST")
+            return False

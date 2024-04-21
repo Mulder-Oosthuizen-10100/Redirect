@@ -66,7 +66,10 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
 
         self.controller = controller
         self.edt_text_var = ctk.StringVar(value="c:/projects/redirect/source.txt")
-        self.controller.set_source_file_name(self.edt_text_var.get())
+        self.controller.set_source_file_name(
+            file_name=self.edt_text_var.get(),
+            show_error_message=False,
+        )
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure((0,1,), weight=1)
 
@@ -82,10 +85,12 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
             sticky="w",
         )
 
-        self.edt_source_folder_location = ctk.CTkEntry(
+        self.edt_source_file_location = ctk.CTkEntry(
             master=self,
             font=('JetBrains Mono',14),
             textvariable=self.edt_text_var,
+            justify="right",
+            state="disabled",
         ).grid(
             row=1,
             column=0,
@@ -103,7 +108,9 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
             master=self,
             image=self.img_source_folder_location,
             text="",
-            command=self.open_source_file,
+            command=lambda: self.open_source_file(
+                show_error_message=True
+            ),
             width=20,
             height=20,
         ).grid(
@@ -113,15 +120,23 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
             pady=(0,10),
         )
 
-    def open_source_file(self):
+    def open_source_file(
+        self,
+        show_error_message,
+    ):
         file_name = filedialog.askopenfilename(
             initialdir=os.getcwd(),
             defaultextension=".txt",
             filetypes=[("Text Files",".txt")],
         )
         if file_name:
-            self.controller.set_source_file_name(file_name)
-            self.update_edt_source_folder_location(file_name)
+            if self.controller.set_source_file_name(
+                file_name=file_name,
+                show_error_message=show_error_message,
+            ):
+                self.update_edt_source_folder_location(
+                    new_text=file_name
+                )
 
     def update_edt_source_folder_location(self, new_text=""):
         self.edt_text_var.set(new_text)
@@ -152,6 +167,8 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
             master=self,
             font=('JetBrains Mono',14),
             textvariable=self.edt_text_var,
+            justify="right",
+            state="disabled",
         ).grid(
             row=1,
             column=0,
@@ -206,7 +223,7 @@ class MainWindow(ctk.CTk):
             width=False,
         )
         
-        self.grid_columnconfigure(0, weight=2)
+        self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure((1,2,3), weight=2)
@@ -224,8 +241,8 @@ class MainWindow(ctk.CTk):
         )
 
         self.frm_shop_list = ShopListFrame(
-            controller=controller,
             master=self,
+            controller=controller,
             corner_radius=16,
         )
         
@@ -277,7 +294,7 @@ class MainWindow(ctk.CTk):
             pady=(0,60),
         )
 
-class ShowMessageWindow(ctk.CTkToplevel):
+class MessageWindow(ctk.CTkToplevel):
     def __init__(
             self,
             controller,
@@ -312,8 +329,8 @@ class ShowMessageWindow(ctk.CTkToplevel):
 
         self.btn_ok = ctk.CTkButton(
             master=self,
-            text='OK',
-            command=self.controller.close_show_message,
+            text='You have a Message',
+            command=self.controller.close_message,
             font=(ViewConstants.LabelFontFamily, 14),
             corner_radius=16,
         ).grid(
@@ -334,13 +351,15 @@ class RedirectView:
         )
         self.root.eval('tk::PlaceWindow . center')
     
-    def show_message(self, text_message="OK"):
-
-        self.sub_root = ShowMessageWindow(
+    def open_message(
+        self,
+        text_message="OK"
+    ):
+        self.sub_root = MessageWindow(
             controller=self.controller,
             text_message=text_message,
         )
         self.sub_root.grab_set()
     
-    def close_show_message(self):
+    def close_message(self):
         self.sub_root.destroy()
