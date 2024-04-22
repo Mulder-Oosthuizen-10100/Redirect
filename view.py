@@ -304,7 +304,7 @@ class MessageWindow(ctk.CTkToplevel):
         ):
         super().__init__(*args, **kwargs)
        
-        self.title("Redirect 404 URLs")
+        self.title("You have a Message")
         self.controller = controller
         self.text_message = text_message
         self.geometry(str(len(self.text_message) * 10)+'x200')
@@ -329,7 +329,7 @@ class MessageWindow(ctk.CTkToplevel):
 
         self.btn_ok = ctk.CTkButton(
             master=self,
-            text='You have a Message',
+            text='OK',
             command=self.controller.close_message,
             font=(ViewConstants.LabelFontFamily, 14),
             corner_radius=16,
@@ -346,6 +346,7 @@ class RedirectView:
         ):
     
         self.controller = controller
+        self.sub_root = None
         self.root = MainWindow(
             controller=self.controller,
         )
@@ -355,11 +356,18 @@ class RedirectView:
         self,
         text_message="OK"
     ):
-        self.sub_root = MessageWindow(
-            controller=self.controller,
-            text_message=text_message,
-        )
-        self.sub_root.grab_set()
+        if self.sub_root is None or not self.sub_root.winfo_exists():
+            self.sub_root = MessageWindow(
+                controller=self.controller,
+                text_message=text_message,
+            )
+            self.sub_root.grab_set()
+        else:
+            self.close_message()
+            self.open_message(
+                text_message=text_message
+            )
     
     def close_message(self):
         self.sub_root.destroy()
+        self.sub_root = None

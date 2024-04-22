@@ -6,7 +6,7 @@ class RedirectController:
     def __init__(self):
         self.model = RedirectModel(controller=self)
         self.view = RedirectView(controller=self)
-        # self.view.root.after(1000, self.add_shops)
+        self.view.root.after(1000, self.add_shops)
         self.view.root.mainloop()
 
     def add_shops(self):
@@ -31,11 +31,6 @@ class RedirectController:
 
     def generate_csv_file(self):
         self.model.generate_csv_file()
-        #     self.view.open_message(
-        #         text_message="Redirect file Generated Successfully!",                
-        #     )
-        # else:
-
 
     def open_message(
         self,
