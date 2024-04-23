@@ -9,6 +9,11 @@ class RedirectController:
         self.view.root.after(1000, self.add_shops)
         self.view.root.mainloop()
 
+    # def update_loading_text(self, new_text):
+    #     self.view.root.frm_shop_list.update_loading_text(
+    #         new_text=new_text
+    #     )
+
     def add_shops(self):
         self.model.set_model_data()
         self.view.root.frm_shop_list.add_shops(self.model.lst_dict_websites)

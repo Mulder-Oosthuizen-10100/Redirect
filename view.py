@@ -12,6 +12,7 @@ class ShopListFrame(ctk.CTkScrollableFrame):
             self,
             master,
             controller,
+            loading_text,
             **kwargs
         ):
         super().__init__(master, **kwargs)
@@ -20,11 +21,12 @@ class ShopListFrame(ctk.CTkScrollableFrame):
         self.grid_columnconfigure(0, weight=1)
         self.lst_rdbtn_shops = []
         self.rdbtn_var = ctk.StringVar(value="off")
+        self.lbl_loading_var = ctk.StringVar(value=loading_text)
         self.row_count = 0
 
         self.lbl_loading = ctk.CTkLabel(
             master=self,
-            text="Loading",
+            text=self.lbl_loading_var.get(),
             font=('JetBrains Mono', 18),
         )
 
@@ -32,6 +34,9 @@ class ShopListFrame(ctk.CTkScrollableFrame):
             row=0,
             column=0,
         )
+    
+    # def update_loading_text(self, new_text):
+    #     self.lbl_loading_var.set(value=new_text)
 
     def add_shops(self, lst_dict_websites):
         self.lbl_loading.destroy()
@@ -243,6 +248,7 @@ class MainWindow(ctk.CTk):
         self.frm_shop_list = ShopListFrame(
             master=self,
             controller=controller,
+            loading_text="Loading",
             corner_radius=16,
         )
         

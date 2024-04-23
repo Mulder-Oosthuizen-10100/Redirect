@@ -26,7 +26,7 @@ class ViewConstantsNamespace:
     @property
     def LabelFontSize(self):
         return 40
-    
+
 ViewConstants = ViewConstantsNamespace()
 
 # Add the default source file location to the constants file

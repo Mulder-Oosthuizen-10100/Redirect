@@ -17,8 +17,17 @@ class RedirectModel():
         self.worksheet_remove_part = self.sheet.worksheet('REMOVE_PARTS')
 
         self.lst_dict_websites = self.worksheet_websites.get_all_records()
+        # self.controller.update_loading_text(
+            # new_text="Loading."
+        # )
         self.lst_dict_remove_parts = self.worksheet_remove_part.get_all_records()
+        # self.controller.update_loading_text(
+            # new_text="Loading.."
+        # )
         self.lst_dict_keywords = self.worksheet_keywords.get_all_records()
+        # self.controller.update_loading_text(
+            # new_text="Loading..."
+        # )
 
     def set_source_file_name(
         self,
@@ -119,27 +128,27 @@ class RedirectModel():
                             self.redirect_file.write(line + '*,' + dict_keyword.get('URL') + "\n")
                             break
 
-# Class internal Functions
-    def validate_file_name(
-        self,
-        file_name,
-        show_error_message,
-    ) -> bool:
-        try:
-            if os.stat(
-                path=file_name
-            ).st_size > 0:
-                if show_error_message:
-                    self.controller.open_message("Source File: OK")
-                    print("Source File: OK")
-                return True
-            else:
-                if show_error_message:
-                    self.controller.open_message("Source File: EMPTY")
-                    print("Source File: EMPTY")
-                return False
-        except OSError:
-            if show_error_message:
-                self.controller.open_message("Source File: DOES NOT EXIST")
-                print("Source File: DOES NOT EXIST")
-            return False
+# # Class internal Functions
+#     def validate_file_name(
+#         self,
+#         file_name,
+#         show_error_message,
+#     ) -> bool:
+#         try:
+#             if os.stat(
+#                 path=file_name
+#             ).st_size > 0:
+#                 if show_error_message:
+#                     self.controller.open_message("Source File: OK")
+#                     print("Source File: OK")
+#                 return True
+#             else:
+#                 if show_error_message:
+#                     self.controller.open_message("Source File: EMPTY")
+#                     print("Source File: EMPTY")
+#                 return False
+#         except OSError:
+#             if show_error_message:
+#                 self.controller.open_message("Source File: DOES NOT EXIST")
+#                 print("Source File: DOES NOT EXIST")
+#             return False
