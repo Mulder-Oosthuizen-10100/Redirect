@@ -81,9 +81,8 @@ class RedirectModel():
     ) -> bool:
         date_time = datetime.now()
         date_time_string = date_time.strftime("%Y_%m_%d__%H_%M_%S")
-        os.makedirs(self.redirect_folder_name + '/' + self.shop_name, exist_ok=True)
-        self.redirect_file_name = self.redirect_folder_name + '/' + self.shop_name + '/' + f'redirect_{date_time_string}.csv'
-        self.unmatched_redirect_file_name = self.redirect_folder_name + '/' + self.shop_name + '/' + f'unmatched_urls_{date_time_string}.txt'
+        self.redirect_file_name = self.redirect_folder_name + '\\' + f'redirect_{date_time_string}.csv'
+        self.unmatched_redirect_file_name = self.redirect_folder_name + '\\' + f'unmatched_urls_{date_time_string}.txt'
 
         if self.controller.validate_source_file_name(
             source_file_name=self.source_file_name,

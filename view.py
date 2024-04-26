@@ -156,7 +156,7 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
         super().__init__(master, **kwargs)
 
         self.controller = controller
-        self.edt_text_var = ctk.StringVar(value="c:/projects/redirect/redirects")
+        self.edt_text_var = ctk.StringVar(value=self.controller.get_default_directory())
         self.controller.set_redirect_folder_name(self.edt_text_var.get())
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure((0,1,), weight=1)
@@ -210,9 +210,7 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
         folder = filedialog.askdirectory(
             title="Select a destination folder for the CSV file",
             # initialdir=self.controller.get_default_directory(),
-            initialdir=self.controller.get_root_directory_from_source_file_name(
-                source_file_name=self.edt_text_var.get()
-            )
+            initialdir=self.edt_text_var.get(),
         )
         if folder:
             self.controller.set_redirect_folder_name(folder)
