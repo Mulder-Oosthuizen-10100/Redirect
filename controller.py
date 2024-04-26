@@ -1,3 +1,4 @@
+from log import RedirectLogger
 from validator import RedirectValidator
 from view import RedirectView
 from model import RedirectModel
@@ -5,8 +6,9 @@ import os, sys
 
 class RedirectController:
     def __init__(self):
-        self.validate = RedirectValidator(controller=self)
         self.model = RedirectModel(controller=self)
+        self.log = RedirectLogger(controller=self,log_config=self.model.get_log_config())
+        self.validate = RedirectValidator(controller=self)
         self.view = RedirectView(controller=self)
         self.view.root.after(1000, self.add_shops)
         self.view.root.mainloop()
@@ -99,6 +101,8 @@ class RedirectController:
             source_file_name=source_file_name,
             show_error_message=show_error_message,
         )
+
+# LOG
 
 # OTHER
 

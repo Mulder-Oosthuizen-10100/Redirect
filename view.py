@@ -227,7 +227,7 @@ class MainWindow(ctk.CTk):
             **kwargs
         ):
         super().__init__(*args, **kwargs)
-       
+        
         self.controller = controller
         self.title("Redirect 404 URLs")
         self.geometry("1000x600")

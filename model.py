@@ -1,3 +1,4 @@
+from type import *
 import gspread, os
 from datetime import datetime
 
@@ -8,6 +9,14 @@ class RedirectModel():
     ):
         self.controller = controller
         self.shop_name = None
+    
+    def get_log_config(self):
+        log_config = LogConfig()
+        log_config.log_file_location = 'c:\\log'
+        log_config.log_file_name = 'redirect.log'
+        log_config.log_level = LogLevel.Debug
+        log_config.log_mode = LogMode.Rewrite
+        return log_config
     
     def set_model_data(self):
         self.service_account = gspread.service_account()
