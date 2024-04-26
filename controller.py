@@ -1,23 +1,33 @@
+from validator import RedirectValidator
 from view import RedirectView
 from model import RedirectModel
 import os, sys
 
 class RedirectController:
     def __init__(self):
+        self.validate = RedirectValidator(controller=self)
         self.model = RedirectModel(controller=self)
         self.view = RedirectView(controller=self)
         self.view.root.after(1000, self.add_shops)
         self.view.root.mainloop()
 
-    # def update_loading_text(self, new_text):
-    #     self.view.root.frm_shop_list.update_loading_text(
-    #         new_text=new_text
-    #     )
-
+# VIEW
     def add_shops(self):
         self.model.set_model_data()
-        self.view.root.frm_shop_list.add_shops(self.model.lst_dict_websites)
+        self.view.root.frm_shop_list.add_shops(lst_dict_websites=self.model.lst_dict_websites)
 
+    def open_message(
+        self,
+        text_message,
+    ):
+        self.view.open_message(
+            text_message=text_message
+        )
+
+    def close_message(self):
+        self.view.close_message()
+
+# MODEL
     def set_source_file_name(
         self,
         file_name,
@@ -30,24 +40,48 @@ class RedirectController:
 
     def set_redirect_folder_name(self, folder):
         self.model.set_redirect_folder_name(folder_name=folder)
-    
-    def set_shop_name(self, shop_name):
-        self.model.set_shop_name(shop_name=shop_name)
 
-    def generate_csv_file(self):
-        self.model.generate_csv_file()
-
-    def open_message(
+    def set_shop_name(
         self,
-        text_message,
+        shop_name,
+        show_error_message,
     ):
-        self.view.open_message(
-            text_message=text_message
+        self.model.set_shop_name(
+            shop_name=shop_name,
+            show_error_message=show_error_message
         )
 
-    def close_message(self):
-        self.view.close_message()
+    def generate_csv_file(
+        self,
+        show_error_message,
+    ):
+        self.model.generate_csv_file(
+            show_error_message=show_error_message
+        )
+
+# VALIDATE
+    def validate_shop_name(
+        self,
+        shop_name,
+        show_error_message,
+    ) -> bool:
+        return self.validate.validate_shop_name(
+            shop_name=shop_name,
+            show_error_message=show_error_message,
+        )
     
+    def validate_source_file_name(
+        self,
+        source_file_name,
+        show_error_message,
+    ) -> bool:
+        return self.validate.validate_source_file_name(
+            source_file_name=source_file_name,
+            show_error_message=show_error_message,
+        )
+
+# OTHER
+
     def resource_path(self, relative_path):
         """ Get absolute path to resource, works for dev and for PyInstaller """
         try:

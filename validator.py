@@ -10,11 +10,13 @@ class RedirectValidator():
     def validate_shop_name(
         self,
         shop_name,
+        show_error_message,
     ) -> bool:
         if (len(shop_name) <= 1) or (not shop_name):
-            msg = f"'{shop_name}' is not a valid shop name"
-            self.controller.open_message(msg)
-            print(msg)
+            if show_error_message:
+                msg = f"'{shop_name}' is not a valid shop name"
+                self.controller.open_message(msg)
+                print(msg)
             return False
         else:
             return True

@@ -34,9 +34,6 @@ class ShopListFrame(ctk.CTkScrollableFrame):
             row=0,
             column=0,
         )
-    
-    # def update_loading_text(self, new_text):
-    #     self.lbl_loading_var.set(value=new_text)
 
     def add_shops(self, lst_dict_websites):
         self.lbl_loading.destroy()
@@ -62,7 +59,8 @@ class ShopListFrame(ctk.CTkScrollableFrame):
 
     def rdbtn_selected(self):
         self.controller.set_shop_name(
-            self.rdbtn_var.get()
+            shop_name=self.rdbtn_var.get(),
+            show_error_message=True
         )
 
 class SourceFolderLocationFrame(ctk.CTkFrame):
@@ -290,7 +288,9 @@ class MainWindow(ctk.CTk):
             corner_radius=20,
             text="Generate CSV File",
             font=('JetBrains Mono',18),
-            command=self.controller.generate_csv_file,
+            command=lambda:self.controller.generate_csv_file(
+                show_error_message=True
+            ),
             width=100,
             height=50,
         ).grid(
