@@ -20,6 +20,18 @@ class RedirectModel():
         self.lst_dict_remove_parts = self.worksheet_remove_part.get_all_records()
         self.lst_dict_keywords = self.worksheet_keywords.get_all_records()
 
+    def get_default_directory(self) -> str:
+        return os.path.expanduser("~\\Documents")
+    
+    def must_update_edt_redirect_folder_location(self):
+        return True
+    
+    def get_root_directory_from_source_file_name(
+        self,
+        source_file_name,
+    ):
+        return os.path.dirname(source_file_name)
+
     def set_source_file_name(
         self,
         file_name,
@@ -31,6 +43,7 @@ class RedirectModel():
             show_error_message=show_error_message,            
         ):
             self.source_file_name = file_name
+            return True
 
     def set_redirect_folder_name(self, folder_name):
         self.redirect_folder_name = folder_name

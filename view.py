@@ -68,7 +68,7 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         super().__init__(master, **kwargs)
 
         self.controller = controller
-        self.edt_text_var = ctk.StringVar(value="c:/projects/redirect/source.txt")
+        self.edt_text_var = ctk.StringVar(value=self.controller.get_default_directory())
         self.controller.set_source_file_name(
             file_name=self.edt_text_var.get(),
             show_error_message=False,
@@ -128,7 +128,8 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         show_error_message,
     ):
         file_name = filedialog.askopenfilename(
-            initialdir=os.getcwd(),
+            title="Open the Source URL File",
+            initialdir=self.controller.get_default_directory(),
             defaultextension=".txt",
             filetypes=[("Text Files",".txt")],
         )
@@ -143,6 +144,12 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
 
     def update_edt_source_folder_location(self, new_text=""):
         self.edt_text_var.set(new_text)
+        if self.controller.must_update_edt_redirect_folder_location():
+            self.controller.update_edt_redirect_folder_location(
+                new_text=self.controller.get_root_directory_from_source_file_name(
+                    source_file_name=new_text
+                )
+            )
 
 class RedirectFolderLocationFrame(ctk.CTkFrame):
     def __init__(self, master, controller, **kwargs):
@@ -200,7 +207,13 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
         )
     
     def open_redirect_folder(self):
-        folder = filedialog.askdirectory()
+        folder = filedialog.askdirectory(
+            title="Select a destination folder for the CSV file",
+            # initialdir=self.controller.get_default_directory(),
+            initialdir=self.controller.get_root_directory_from_source_file_name(
+                source_file_name=self.edt_text_var.get()
+            )
+        )
         if folder:
             self.controller.set_redirect_folder_name(folder)
             self.update_edt_redirect_folder_location(folder)
@@ -275,7 +288,9 @@ class MainWindow(ctk.CTk):
             controller=controller,
             master=self,
             corner_radius=16,
-        ).grid(
+        )
+
+        self.frm_redirect_location.grid(
             row=2,
             column=1,
             padx=60,
