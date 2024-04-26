@@ -27,6 +27,12 @@ class RedirectController:
     def close_message(self):
         self.view.close_message()
 
+    def update_edt_redirect_folder_location(
+        self,
+        new_text
+    ):
+        self.view.root.frm_redirect_location.update_edt_redirect_folder_location(new_text=new_text)
+
 # MODEL
     def set_source_file_name(
         self,
@@ -57,6 +63,20 @@ class RedirectController:
     ):
         self.model.generate_csv_file(
             show_error_message=show_error_message
+        )
+    
+    def get_default_directory(self) -> str:
+        return self.model.get_default_directory()
+    
+    def must_update_edt_redirect_folder_location(self) -> bool:
+        return self.model.must_update_edt_redirect_folder_location()
+
+    def get_root_directory_from_source_file_name(
+        self,
+        source_file_name,
+    ):
+        return self.model.get_root_directory_from_source_file_name(
+            source_file_name=source_file_name
         )
 
 # VALIDATE
