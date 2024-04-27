@@ -1,3 +1,4 @@
+from type import LogLevel, LogCaller
 from log import RedirectLogger
 from validator import RedirectValidator
 from view import RedirectView
@@ -103,6 +104,49 @@ class RedirectController:
         )
 
 # LOG
+    def debug(
+        self,
+        log_caller: LogCaller,
+        log_message: str,
+    ):
+        self.log.log(
+            log_level=LogLevel.Debug,
+            log_caller=log_caller,
+            log_message=log_message
+        )
+
+    def info(
+        self,
+        log_caller: LogCaller,
+        log_message: str,
+    ):
+        self.log.log(
+            log_level=LogLevel.Info,
+            log_caller=log_caller,
+            log_message=log_message
+        )
+
+    def warn(
+        self,
+        log_caller: LogCaller,
+        log_message: str,
+    ):
+        self.log.log(
+            log_level=LogLevel.Warn,
+            log_caller=log_caller,
+            log_message=log_message
+        )
+
+    def error(
+        self,
+        log_caller: LogCaller,
+        log_message: str,
+    ):
+        self.log.log(
+            log_level=LogLevel.Error,
+            log_caller=log_caller,
+            log_message=log_message
+        )
 
 # OTHER
 

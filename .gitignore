@@ -1,10 +1,12 @@
+__pycache__
 /.venv
 /.vscode
-__pycache__
 /build
 /dist
+/log
 *.txt
 *.exe
 *.spec
 *.csv
 *.iss
+*.log

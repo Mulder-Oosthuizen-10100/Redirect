@@ -11,10 +11,15 @@ class LogLevel(Enum):
     Warn = 2
     Error = 3
 
+class LogCaller(Enum):
+    Controller = 0
+    View = 1
+    Model = 2
+    Validator = 3
+
 @dataclass
 class LogConfig:
     log_file_location: str
     log_file_name: str
     log_mode: LogMode
-    log_level = LogLevel
-    # log_caller = str
+    log_level: LogLevel

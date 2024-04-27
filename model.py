@@ -10,14 +10,25 @@ class RedirectModel():
         self.controller = controller
         self.shop_name = None
     
-    def get_log_config(self):
-        log_config = LogConfig()
-        log_config.log_file_location = 'c:\\log'
-        log_config.log_file_name = 'redirect.log'
-        log_config.log_level = LogLevel.Debug
-        log_config.log_mode = LogMode.Rewrite
-        return log_config
+    def get_log_config(self) -> LogConfig:
+        return LogConfig(
+            log_file_location = self.get_log_file_location(),
+            log_file_name = self.get_log_file_name(),
+            log_mode = LogMode.Rewrite,
+            log_level = LogLevel.Debug,
+        )
+
+    def get_log_file_name(self) -> str:
+        date_time_string = datetime.now().strftime("%d-%m-%Y")
+        log_file_name = date_time_string + ".log"
+        return log_file_name
     
+    def get_log_file_location(self) -> str:
+        year_string = datetime.now().strftime("%Y") + "\\"
+        month_string = datetime.now().strftime("%B")
+        log_file_location = os.getcwd() + "\\" + "log\\" + year_string + month_string
+        return log_file_location
+
     def set_model_data(self):
         self.service_account = gspread.service_account()
         self.sheet = self.service_account.open('WEBSITE_DATA')
@@ -45,7 +56,6 @@ class RedirectModel():
         self,
         file_name,
         show_error_message,
-        # log_error_message,
     ) -> bool:
         if self.controller.validate_source_file_name(
             source_file_name=file_name,

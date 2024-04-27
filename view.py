@@ -229,6 +229,10 @@ class MainWindow(ctk.CTk):
         super().__init__(*args, **kwargs)
         
         self.controller = controller
+        self.controller.debug(
+            log_caller="View",
+            log_message="This is a log message",
+        )
         self.title("Redirect 404 URLs")
         self.geometry("1000x600")
         self.iconbitmap(self.controller.resource_path("images\\RedirectLogo.ico"))
