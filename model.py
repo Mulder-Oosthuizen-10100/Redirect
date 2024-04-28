@@ -2,6 +2,8 @@ from type import *
 import gspread, os
 from datetime import datetime
 
+_caller = "MODEL"
+
 class RedirectModel():
     def __init__(
         self,

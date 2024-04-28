@@ -5,6 +5,8 @@ from view import RedirectView
 from model import RedirectModel
 import os, sys
 
+_caller = "CONTROLLER"
+
 class RedirectController:
     def __init__(self):
         self.model = RedirectModel(controller=self)
