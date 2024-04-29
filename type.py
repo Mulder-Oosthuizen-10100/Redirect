@@ -6,10 +6,10 @@ class LogMode(Enum):
     Append = 1
 
 class LogLevel(Enum):
-    Debug = 0
-    Info = 1
-    Warn = 2
-    Error = 3
+    Error = 0
+    Warn = 1
+    Info = 2
+    Debug = 3
 
 class LogCaller(Enum):
     Controller = 0

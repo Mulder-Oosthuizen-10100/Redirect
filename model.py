@@ -16,7 +16,7 @@ class RedirectModel():
         return LogConfig(
             log_file_location = self.get_log_file_location(),
             log_file_name = self.get_log_file_name(),
-            log_mode = LogMode.Rewrite,
+            log_mode = LogMode.Append,
             log_level = LogLevel.Debug,
         )
 
@@ -31,7 +31,7 @@ class RedirectModel():
         log_file_location = os.getcwd() + "\\" + "log\\" + year_string + month_string
         return log_file_location
 
-    def set_model_data(self):
+    def set_model_data(self) -> bool:
         self.service_account = gspread.service_account()
         self.sheet = self.service_account.open('WEBSITE_DATA')
         self.worksheet_websites = self.sheet.worksheet('WEBSITES')
@@ -39,8 +39,15 @@ class RedirectModel():
         self.worksheet_remove_part = self.sheet.worksheet('REMOVE_PARTS')
 
         self.lst_dict_websites = self.worksheet_websites.get_all_records()
-        self.lst_dict_remove_parts = self.worksheet_remove_part.get_all_records()
-        self.lst_dict_keywords = self.worksheet_keywords.get_all_records()
+        if self.controller.validate_websites(
+            lst_dict_websites=self.lst_dict_websites,
+            show_error_message=True,
+        ):
+            self.lst_dict_remove_parts = self.worksheet_remove_part.get_all_records()
+            self.lst_dict_keywords = self.worksheet_keywords.get_all_records()
+            return True
+        else:
+            return False
 
     def get_default_directory(self) -> str:
         return os.path.expanduser("~\\Documents")
@@ -91,10 +98,21 @@ class RedirectModel():
             if self.open_files(
                 show_error_message=show_error_message,
             ):
-                self.internal_generate_csv_file(
-                    show_error_message=show_error_message,
-                )
-                self.close_files()
+                try:
+                    self.internal_generate_csv_file(
+                        show_error_message=show_error_message,
+                    )
+                    self.controller.open_message(
+                        text_message="Successfully Redirected the Source File!",
+                        close_application=False,
+                    )
+                except Exception as e:
+                    self.controller.open_message(
+                        text_message=f"An Error occurred! Error Message: {e}",
+                        close_application=False,
+                    )
+                finally:
+                    self.close_files()
 
     def open_files(
         self,
@@ -133,7 +151,8 @@ class RedirectModel():
                 else:
                     if show_error_message:
                         self.controller.open_message(
-                            text_message=f"WARNING: There are no remove parts for shop {shop_name}."
+                            text_message=f"WARNING: There are no remove parts for shop {shop_name}.",
+                            close_application=False
                         )
                     return ""
     

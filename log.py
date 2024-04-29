@@ -29,7 +29,7 @@ class RedirectLogger():
         log_caller: LogCaller,
         log_level: LogLevel,
     ):
-        if log_level == self.log_level:
+        if log_level.value <= self.log_level.value:
 
             if self.log_mode == LogMode.Append:
                 self.log_file = open(self.log_file_location + '\\' + self.log_file_name, 'a')
@@ -53,7 +53,7 @@ class RedirectLogger():
     ) -> str:
         date_time_string = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         log_line = date_time_string + ' - '
-        log_line = log_line + log_caller + ' - '
+        log_line = log_line + log_caller.name + ' - '
         log_line = log_line + log_level.name + ' - '
-        log_line = log_line + log_message
+        log_line = log_line + log_message + '\n'
         return log_line

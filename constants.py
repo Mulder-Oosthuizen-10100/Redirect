@@ -26,6 +26,10 @@ class ViewConstantsNamespace:
     @property
     def LabelFontSize(self):
         return 40
+    
+    @property
+    def GoogleSheetDocumentName(self):
+        return "WEBSITE_DATA"
 
 ViewConstants = ViewConstantsNamespace()
 

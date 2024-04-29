@@ -13,30 +13,40 @@ class RedirectController:
         self.log = RedirectLogger(controller=self,log_config=self.model.get_log_config())
         self.validate = RedirectValidator(controller=self)
         self.view = RedirectView(controller=self)
-        self.view.root.after(1000, self.add_shops)
+        self.view.root.after(500, self.add_shops)
         self.view.root.mainloop()
 
 # VIEW
     def add_shops(self):
-        self.model.set_model_data()
-        self.view.root.frm_shop_list.add_shops(lst_dict_websites=self.model.lst_dict_websites)
+        if self.model.set_model_data():
+            self.view.root.frm_shop_list.add_shops(lst_dict_websites=self.model.lst_dict_websites)
 
     def open_message(
         self,
         text_message,
+        close_application: bool,
     ):
         self.view.open_message(
-            text_message=text_message
+            text_message=text_message,
+            close_application=close_application,
         )
 
-    def close_message(self):
+    def close_message(
+        self,
+        close_application: bool,
+    ):
         self.view.close_message()
+        if close_application:
+            self.close_application()
 
     def update_edt_redirect_folder_location(
         self,
         new_text
     ):
         self.view.root.frm_redirect_location.update_edt_redirect_folder_location(new_text=new_text)
+    
+    def close_application(self):
+        self.view.root.destroy()
 
 # MODEL
     def set_source_file_name(
@@ -85,6 +95,16 @@ class RedirectController:
         )
 
 # VALIDATE
+    def validate_websites(
+        self,
+        lst_dict_websites,
+        show_error_message,
+    ) -> bool:
+        return self.validate.validate_websites(
+            lst_dict_websites=lst_dict_websites,
+            show_error_message=show_error_message,
+        )
+
     def validate_shop_name(
         self,
         shop_name,

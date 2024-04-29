@@ -1,6 +1,5 @@
 import customtkinter as ctk
 from tkinter import filedialog
-import os
 from PIL import Image
 from constants import ViewConstants
 
@@ -320,11 +319,12 @@ class MessageWindow(ctk.CTkToplevel):
             self,
             controller,
             text_message,
+            close_application: bool,
             *args,
             **kwargs
         ):
         super().__init__(*args, **kwargs)
-       
+
         self.title("You have a Message")
         self.controller = controller
         self.text_message = text_message
@@ -351,14 +351,16 @@ class MessageWindow(ctk.CTkToplevel):
         self.btn_ok = ctk.CTkButton(
             master=self,
             text='OK',
-            command=self.controller.close_message,
+            command=lambda: self.controller.close_message(
+                close_application=close_application,
+            ),
             font=(ViewConstants.LabelFontFamily, 14),
             corner_radius=16,
         ).grid(
             row=1,
             column=0,
             pady=20,
-        )
+        )        
 
 class RedirectView:
     def __init__(
@@ -375,20 +377,24 @@ class RedirectView:
     
     def open_message(
         self,
-        text_message="OK"
+        text_message,
+        close_application: bool,
     ):
         if self.sub_root is None or not self.sub_root.winfo_exists():
             self.sub_root = MessageWindow(
                 controller=self.controller,
                 text_message=text_message,
+                close_application=close_application,
             )
             self.sub_root.grab_set()
         else:
+            previous_message=self.sub_root.text_message
             self.close_message()
             self.open_message(
-                text_message=text_message
+                text_message=previous_message + '\n' + text_message,
+                close_application=close_application,
             )
-    
+
     def close_message(self):
         self.sub_root.destroy()
         self.sub_root = None
