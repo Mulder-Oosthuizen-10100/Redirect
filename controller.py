@@ -95,13 +95,17 @@ class RedirectController:
         )
 
 # VALIDATE
-    def validate_websites(
+    def validate_worksheets(
         self,
         lst_dict_websites,
+        lst_dict_keywords,
+        lst_dict_remove_parts,
         show_error_message,
     ) -> bool:
-        return self.validate.validate_websites(
+        return self.validate.validate_worksheets(
             lst_dict_websites=lst_dict_websites,
+            lst_dict_keywords=lst_dict_keywords,
+            lst_dict_remove_parts=lst_dict_remove_parts,
             show_error_message=show_error_message,
         )
 

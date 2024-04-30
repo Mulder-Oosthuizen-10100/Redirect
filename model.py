@@ -36,15 +36,18 @@ class RedirectModel():
         self.sheet = self.service_account.open('WEBSITE_DATA')
         self.worksheet_websites = self.sheet.worksheet('WEBSITES')
         self.worksheet_keywords = self.sheet.worksheet('KEYWORDS')
-        self.worksheet_remove_part = self.sheet.worksheet('REMOVE_PARTS')
+        self.worksheet_remove_parts = self.sheet.worksheet('REMOVE_PARTS')
 
         self.lst_dict_websites = self.worksheet_websites.get_all_records()
-        if self.controller.validate_websites(
+        self.lst_dict_remove_parts = self.worksheet_remove_parts.get_all_records()
+        self.lst_dict_keywords = self.worksheet_keywords.get_all_records()
+
+        if self.controller.validate_worksheets(
             lst_dict_websites=self.lst_dict_websites,
+            lst_dict_keywords=self.lst_dict_keywords,
+            lst_dict_remove_parts=self.lst_dict_remove_parts,
             show_error_message=True,
         ):
-            self.lst_dict_remove_parts = self.worksheet_remove_part.get_all_records()
-            self.lst_dict_keywords = self.worksheet_keywords.get_all_records()
             return True
         else:
             return False
@@ -72,6 +75,9 @@ class RedirectModel():
         ):
             self.source_file_name = file_name
             return True
+        else:
+            self.source_file_name = None
+            return False
 
     def set_redirect_folder_name(self, folder_name):
         self.redirect_folder_name = folder_name
@@ -108,7 +114,7 @@ class RedirectModel():
                     )
                 except Exception as e:
                     self.controller.open_message(
-                        text_message=f"An Error occurred! Error Message: {e}",
+                        text_message=f"An Error occurred during the redirect process! Error Message: {e}",
                         close_application=False,
                     )
                 finally:
