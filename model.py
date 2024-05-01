@@ -1,8 +1,8 @@
 from type import *
-import gspread, os
 from datetime import datetime
+import gspread, os, inspect
 
-_caller = "MODEL"
+_caller: LogCaller = LogCaller.Model
 
 class RedirectModel():
     def __init__(
@@ -11,27 +11,27 @@ class RedirectModel():
     ):
         self.controller = controller
         self.shop_name = None
-    
-    def get_log_config(self) -> LogConfig:
-        return LogConfig(
-            log_file_location = self.get_log_file_location(),
-            log_file_name = self.get_log_file_name(),
-            log_mode = LogMode.Append,
-            log_level = LogLevel.Debug,
-        )
 
-    def get_log_file_name(self) -> str:
-        date_time_string = datetime.now().strftime("%d-%m-%Y")
-        log_file_name = date_time_string + ".log"
-        return log_file_name
+    # def get_log_config(self) -> LogConfig:
+    #     return LogConfig(
+    #         log_file_location = self.get_log_file_location(),
+    #         log_file_name = self.get_log_file_name(),
+    #         log_level = LogLevel.Debug,
+    #     )
+
+    # def get_log_file_name(self) -> str:
+    #     date_time_string = datetime.now().strftime("%d-%m-%Y")
+    #     log_file_name = date_time_string + ".log"
+    #     return log_file_name
     
-    def get_log_file_location(self) -> str:
-        year_string = datetime.now().strftime("%Y") + "\\"
-        month_string = datetime.now().strftime("%B")
-        log_file_location = os.getcwd() + "\\" + "log\\" + year_string + month_string
-        return log_file_location
+    # def get_log_file_location(self) -> str:
+    #     year_string = datetime.now().strftime("%Y") + "\\"
+    #     month_string = datetime.now().strftime("%B")
+    #     log_file_location = os.getcwd() + "\\" + "log\\" + year_string + month_string
+    #     return log_file_location
 
     def set_model_data(self) -> bool:
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         self.service_account = gspread.service_account()
         self.sheet = self.service_account.open('WEBSITE_DATA')
         self.worksheet_websites = self.sheet.worksheet('WEBSITES')
@@ -53,25 +53,31 @@ class RedirectModel():
             return False
 
     def get_default_directory(self) -> str:
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         return os.path.expanduser("~\\Documents")
     
     def must_update_edt_redirect_folder_location(self):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         return True
     
     def get_root_directory_from_source_file_name(
         self,
         source_file_name,
     ):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         return os.path.dirname(source_file_name)
 
     def set_source_file_name(
         self,
         file_name,
         show_error_message,
+        log_error_message,
     ) -> bool:
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         if self.controller.validate_source_file_name(
             source_file_name=file_name,
-            show_error_message=show_error_message,            
+            show_error_message=show_error_message,
+            log_error_message=log_error_message,
         ):
             self.source_file_name = file_name
             return True
@@ -80,6 +86,7 @@ class RedirectModel():
             return False
 
     def set_redirect_folder_name(self, folder_name):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         self.redirect_folder_name = folder_name
 
     def set_shop_name(
@@ -87,6 +94,7 @@ class RedirectModel():
         shop_name,
         show_error_message
     ):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         if self.controller.validate_shop_name(
             shop_name=shop_name,
             show_error_message=show_error_message,
@@ -96,13 +104,16 @@ class RedirectModel():
     def generate_csv_file(
         self,
         show_error_message,
+        log_error_message,
     ):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         if self.controller.validate_shop_name(
             shop_name=self.shop_name,
             show_error_message=show_error_message,
         ):
             if self.open_files(
                 show_error_message=show_error_message,
+                log_error_message=log_error_message,
             ):
                 try:
                     self.internal_generate_csv_file(
@@ -123,7 +134,9 @@ class RedirectModel():
     def open_files(
         self,
         show_error_message,
+        log_error_message,
     ) -> bool:
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         date_time = datetime.now()
         date_time_string = date_time.strftime("%Y_%m_%d__%H_%M_%S")
         self.redirect_file_name = self.redirect_folder_name + '\\' + f'redirect_{date_time_string}.csv'
@@ -132,6 +145,7 @@ class RedirectModel():
         if self.controller.validate_source_file_name(
             source_file_name=self.source_file_name,
             show_error_message=show_error_message,
+            log_error_message=log_error_message,
         ):
             self.source_file = open(self.source_file_name, 'r')
             self.redirect_file = open(self.redirect_file_name, 'a')
@@ -139,6 +153,7 @@ class RedirectModel():
             return True
 
     def close_files(self):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         if self.source_file:
             self.source_file.close()
             self.redirect_file.close()
@@ -149,6 +164,7 @@ class RedirectModel():
         shop_name,
         show_error_message
     ):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         for website_remove_part in self.lst_dict_remove_parts:
             if shop_name == website_remove_part.get("WEBSITE"):
                 remove_part = website_remove_part.get("REMOVE_PART")
@@ -157,15 +173,20 @@ class RedirectModel():
                 else:
                     if show_error_message:
                         self.controller.open_message(
-                            text_message=f"WARNING: There are no remove parts for shop {shop_name}.",
+                            text_message=f"WARNING: There are no remove parts for shop '{shop_name}'.",
                             close_application=False
                         )
+                    self.controller.warn(
+                        log_caller=_caller,
+                        log_message=f"There are no remove parts for shop '{shop_name}'.",
+                    )
                     return ""
     
     def internal_generate_csv_file(
         self,
         show_error_message,
     ):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         remove_part = self.get_remove_part(
             shop_name=self.shop_name,
             show_error_message=show_error_message,

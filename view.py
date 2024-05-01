@@ -1,12 +1,13 @@
 import customtkinter as ctk
+import inspect
 from tkinter import filedialog
 from PIL import Image
-from constants import ViewConstants
+from type import *
 
 ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("dark-blue")
 
-_caller = "VIEW"
+_caller: LogCaller = LogCaller.View
 
 class ShopListFrame(ctk.CTkScrollableFrame):
     def __init__(
@@ -37,6 +38,7 @@ class ShopListFrame(ctk.CTkScrollableFrame):
         )
 
     def add_shops(self, lst_dict_websites):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         self.lbl_loading.destroy()
         for shop in lst_dict_websites:
             self.grid_rowconfigure(self.row_count, weight=1)
@@ -59,6 +61,7 @@ class ShopListFrame(ctk.CTkScrollableFrame):
             self.row_count += 1
 
     def rdbtn_selected(self):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         self.controller.set_shop_name(
             shop_name=self.rdbtn_var.get(),
             show_error_message=True
@@ -73,6 +76,7 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         self.controller.set_source_file_name(
             file_name=self.edt_text_var.get(),
             show_error_message=False,
+            log_error_message=False,
         )
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure((0,1,), weight=1)
@@ -113,7 +117,8 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
             image=self.img_source_folder_location,
             text="",
             command=lambda: self.open_source_file(
-                show_error_message=True
+                show_error_message=True,
+                log_error_message=True,
             ),
             width=20,
             height=20,
@@ -127,7 +132,9 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
     def open_source_file(
         self,
         show_error_message,
+        log_error_message,
     ):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         file_name = filedialog.askopenfilename(
             title="Open the Source URL File",
             initialdir=self.controller.get_default_directory(),
@@ -138,12 +145,14 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
             if self.controller.set_source_file_name(
                 file_name=file_name,
                 show_error_message=show_error_message,
+                log_error_message=log_error_message,
             ):
                 self.update_edt_source_folder_location(
                     new_text=file_name
                 )
 
     def update_edt_source_folder_location(self, new_text=""):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         self.edt_text_var.set(new_text)
         if self.controller.must_update_edt_redirect_folder_location():
             self.controller.update_edt_redirect_folder_location(
@@ -208,9 +217,9 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
         )
     
     def open_redirect_folder(self):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         folder = filedialog.askdirectory(
             title="Select a destination folder for the CSV file",
-            # initialdir=self.controller.get_default_directory(),
             initialdir=self.edt_text_var.get(),
         )
         if folder:
@@ -218,6 +227,7 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
             self.update_edt_redirect_folder_location(folder)
     
     def update_edt_redirect_folder_location(self, new_text=""):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         self.edt_text_var.set(new_text)
 
 class MainWindow(ctk.CTk):
@@ -246,7 +256,10 @@ class MainWindow(ctk.CTk):
         self.lbl_heading = ctk.CTkLabel(
             master=self,
             text="Redirect 404 URLs",
-            font=(ViewConstants.LabelFontFamily, ViewConstants.LabelFontSize),
+            font=(
+                self.controller.const.LabelFontFamily,
+                self.controller.const.LabelFontSize,
+            )
         ).grid(
             row=0,
             column=0,
@@ -303,7 +316,8 @@ class MainWindow(ctk.CTk):
             text="Generate CSV File",
             font=('JetBrains Mono',18),
             command=lambda:self.controller.generate_csv_file(
-                show_error_message=True
+                show_error_message=True,
+                log_error_message=True,
             ),
             width=100,
             height=50,
@@ -341,7 +355,7 @@ class MessageWindow(ctk.CTkToplevel):
         self.lbl_heading = ctk.CTkLabel(
             master=self,
             text=self.text_message,
-            font=(ViewConstants.LabelFontFamily, 14),
+            font=('JetBrains Mono', 14),
         ).grid(
             row=0,
             column=0,
@@ -354,7 +368,7 @@ class MessageWindow(ctk.CTkToplevel):
             command=lambda: self.controller.close_message(
                 close_application=close_application,
             ),
-            font=(ViewConstants.LabelFontFamily, 14),
+            font=('JetBrains Mono', 14),
             corner_radius=16,
         ).grid(
             row=1,
@@ -380,6 +394,7 @@ class RedirectView:
         text_message,
         close_application: bool,
     ):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         if self.sub_root is None or not self.sub_root.winfo_exists():
             self.sub_root = MessageWindow(
                 controller=self.controller,
@@ -396,5 +411,6 @@ class RedirectView:
             )
 
     def close_message(self):
+        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
         self.sub_root.destroy()
         self.sub_root = None
