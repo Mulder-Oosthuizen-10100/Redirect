@@ -11,6 +11,10 @@ class RedirectModel():
     ):
         self.controller = controller
         self.shop_name = None
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageClassInitializing}: {self.__class__.__name__}"
+        )
 
     # def get_log_config(self) -> LogConfig:
     #     return LogConfig(

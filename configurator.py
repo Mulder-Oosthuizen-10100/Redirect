@@ -22,9 +22,12 @@ class RedirectConfiguration():
             self.configuration.write(self.configuration_file)
 
     @property
-    def LogLevel(self):
+    def LogLevel(self) -> LogLevel:
         self.section_logging = self.configuration[RedirectConstants.ConfigurationSectionLogging]
-        return self.section_logging.get(RedirectConstants.ConfigurationKeyLogLevel, 'Error')
+        try:
+            return LogLevel[self.section_logging.get(RedirectConstants.ConfigurationKeyLogLevel, LogLevel.Error)]
+        except KeyError:
+            return LogLevel.Error
 
-con = RedirectConfiguration()
-print(con.LogLevel)
+# con = RedirectConfiguration()
+# print(con.LogLevel)

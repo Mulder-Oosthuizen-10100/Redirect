@@ -4,6 +4,7 @@ from validator import RedirectValidator
 from view import RedirectView
 from model import RedirectModel
 from constants import RedirectConstants
+from configurator import RedirectConfiguration
 import os, sys, inspect
 
 _caller: LogCaller = LogCaller.Controller
@@ -11,21 +12,15 @@ _caller: LogCaller = LogCaller.Controller
 class RedirectController:
     def __init__(
         self,
-        log_configuration: LogConfig
+        logger: RedirectLogger,
     ):
+        self.logger = logger
         self.const = RedirectConstants()
-        application_started_log_message=self.const.LogMessageApplicationStart
         
-        self.log = RedirectLogger(controller=self)
-
-
+        self.info(log_caller=_caller,log_message=self.const.LogMessageApplicationStart)
+        
         self.model = RedirectModel(controller=self)
-        temp_info_log_message=f"{self.const.LogMessageClassInitialized}: {self.model.__class__.__name__}"
-
-        self.log = RedirectLogger(controller=self,log_config=self.model.get_log_config())
-        self.info(log_caller=_caller,log_message=application_started_log_message)
-        self.info(log_caller=_caller,log_message=temp_info_log_message)
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageClassInitialized}: {self.log.__class__.__name__}")
+        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageClassInitialized}: {self.model.__class__.__name__}")
 
         self.validate = RedirectValidator(controller=self)
         self.info(log_caller=_caller,log_message=f"{self.const.LogMessageClassInitialized}: {self.validate.__class__.__name__}")
@@ -176,7 +171,7 @@ class RedirectController:
         log_caller: LogCaller,
         log_message: str,
     ):
-        self.log.log(
+        self.logger.log(
             log_level=LogLevel.Debug,
             log_caller=log_caller,
             log_message=log_message
@@ -187,7 +182,7 @@ class RedirectController:
         log_caller: LogCaller,
         log_message: str,
     ):
-        self.log.log(
+        self.logger.log(
             log_level=LogLevel.Info,
             log_caller=log_caller,
             log_message=log_message
@@ -198,7 +193,7 @@ class RedirectController:
         log_caller: LogCaller,
         log_message: str,
     ):
-        self.log.log(
+        self.logger.log(
             log_level=LogLevel.Warn,
             log_caller=log_caller,
             log_message=log_message
@@ -209,7 +204,7 @@ class RedirectController:
         log_caller: LogCaller,
         log_message: str,
     ):
-        self.log.log(
+        self.logger.log(
             log_level=LogLevel.Error,
             log_caller=log_caller,
             log_message=log_message
@@ -228,13 +223,16 @@ class RedirectController:
         return os.path.join(base_path, relative_path)
 
 if __name__ == "__main__":
+    configuration = RedirectConfiguration()
 
-    # have to use the config class
-    # have to create the logger using the config class 
+    logger = RedirectLogger(
+        log_config=RedirectLogger.get_log_config()
+    )
 
-    # con = RedirectConfiguration()
-    # print(con.LogLevel)
+    logger.log_level = configuration.LogLevel
 
+    print(f"Log Level: {configuration.LogLevel}")
+    
     controller = RedirectController(
-        log_configuration=RedirectLogger.get_log_config()
+        logger=logger
     )

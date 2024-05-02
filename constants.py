@@ -10,12 +10,16 @@ class RedirectConstants:
         return "APPLICATION_STARTED"
 
     @property
+    def LogMessageClassInitializing(self):
+        return "  CLASS_INITIALIZING"    
+
+    @property
     def LogMessageClassInitialized(self):
-        return "  CLASS_INITIALIZED"
+        return "    CLASS_INITIALIZED"
     
     @property
     def LogMessageFunctionCalled(self):
-        return "    FUNCTION_CALLED"
+        return "      FUNCTION_CALLED"
 
     @classproperty
     def ConfigurationFileName(self) -> str:

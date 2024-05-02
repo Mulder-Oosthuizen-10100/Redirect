@@ -5,13 +5,7 @@ from datetime import datetime
 class RedirectLogger():
     def __init__(
         self,
-        controller,
-    ):
-        self.controller = controller
-
-    def configure_logger(
-        self,
-        log_config: LogConfig
+        log_config: LogConfig,
     ):
         if log_config.log_file_name:
             self.log_file_name = log_config.log_file_name
