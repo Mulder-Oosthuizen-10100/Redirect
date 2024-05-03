@@ -9,6 +9,10 @@ class RedirectValidator():
         controller,
     ):
         self.controller = controller
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageClassInitializing}({self.controller.get_line_number(7)}): {self.__class__.__name__}"
+        )        
 
     def validate_worksheets(
         self,
@@ -17,7 +21,10 @@ class RedirectValidator():
         lst_dict_remove_parts,
         show_error_message,
     ) -> bool:
-        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(9)}): {inspect.stack()[0][3]}"
+        )
         if lst_dict_websites:
             if lst_dict_keywords:
                 if lst_dict_remove_parts:
@@ -61,7 +68,10 @@ class RedirectValidator():
         shop_name,
         show_error_message,
     ) -> bool:
-        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
+        )
         if not shop_name:
             if show_error_message:
                 self.controller.open_message(
@@ -82,7 +92,10 @@ class RedirectValidator():
         show_error_message,
         log_error_message,
     ) -> bool:
-        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(8)}): {inspect.stack()[0][3]}"
+        )
         try:
             if source_file_name:
                 if os.path.isfile(

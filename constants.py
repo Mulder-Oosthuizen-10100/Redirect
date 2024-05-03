@@ -11,7 +11,7 @@ class RedirectConstants:
 
     @property
     def LogMessageClassInitializing(self):
-        return "  CLASS_INITIALIZING"    
+        return "  CLASS_INITIALIZING"
 
     @property
     def LogMessageClassInitialized(self):
@@ -20,6 +20,22 @@ class RedirectConstants:
     @property
     def LogMessageFunctionCalled(self):
         return "      FUNCTION_CALLED"
+    
+    @property
+    def LogMessageFunctionStatement(self):
+        return "        FUNCTION_STATEMENT"
+
+    @property
+    def LogMessageFunctionReturned(self):
+        return "        FUNCTION_RETURNED"
+    
+    @property
+    def LogMessageFunctionParameters(self):
+        return "        FUNCTION_PARAMETERS"
+
+    @property
+    def PathRedirectLogo(self):
+        return "images\\RedirectLogo.ico"
 
     @classproperty
     def ConfigurationFileName(self) -> str:

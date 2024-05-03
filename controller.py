@@ -5,6 +5,7 @@ from view import RedirectView
 from model import RedirectModel
 from constants import RedirectConstants
 from configurator import RedirectConfiguration
+from inspect import *
 import os, sys, inspect
 
 _caller: LogCaller = LogCaller.Controller
@@ -17,23 +18,42 @@ class RedirectController:
         self.logger = logger
         self.const = RedirectConstants()
         
-        self.info(log_caller=_caller,log_message=self.const.LogMessageApplicationStart)
+        self.info(
+            log_caller=_caller,
+            log_message=self.const.LogMessageApplicationStart
+        )
         
-        self.model = RedirectModel(controller=self)
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageClassInitialized}: {self.model.__class__.__name__}")
+        self.model = RedirectModel(
+            controller=self
+        )
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageClassInitialized}({self.get_line_number(5)}): {self.model.__class__.__name__}"
+        )
 
         self.validate = RedirectValidator(controller=self)
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageClassInitialized}: {self.validate.__class__.__name__}")
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageClassInitialized}({self.get_line_number(3)}): {self.validate.__class__.__name__}"
+        )
         
         self.view = RedirectView(controller=self)
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageClassInitialized}: {self.view.__class__.__name__}")
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageClassInitialized}({self.get_line_number(3)}): {self.view.__class__.__name__}"
+        )
 
         self.view.root.after(500, self.add_shops)
         self.view.root.mainloop()
 
 # VIEW
-    def add_shops(self):
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+    def add_shops(
+        self
+    ):
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(5)}): {inspect.stack()[0][3]}"
+        )
         if self.model.set_model_data():
             self.view.root.frm_shop_list.add_shops(lst_dict_websites=self.model.lst_dict_websites)
 
@@ -42,7 +62,10 @@ class RedirectController:
         text_message,
         close_application: bool,
     ):
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(7)}): {inspect.stack()[0][3]}"
+        )
         self.view.open_message(
             text_message=text_message,
             close_application=close_application,
@@ -52,7 +75,10 @@ class RedirectController:
         self,
         close_application: bool,
     ):
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(6)}): {inspect.stack()[0][3]}"
+        )
         self.view.close_message()
         if close_application:
             self.close_application()
@@ -61,11 +87,19 @@ class RedirectController:
         self,
         new_text
     ):
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(6)}): {inspect.stack()[0][3]}"
+        )
         self.view.root.frm_redirect_location.update_edt_redirect_folder_location(new_text=new_text)
     
-    def close_application(self):
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+    def close_application(
+        self
+    ):
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(6)}): {inspect.stack()[0][3]}"
+        )
         self.view.root.destroy()
 
 # MODEL
@@ -75,15 +109,24 @@ class RedirectController:
         show_error_message,
         log_error_message,
     ) -> bool:
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(8)}): {inspect.stack()[0][3]}"
+        )
         return self.model.set_source_file_name(
             file_name=file_name,
             show_error_message=show_error_message,
             log_error_message=log_error_message,
         )
 
-    def set_redirect_folder_name(self, folder):
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+    def set_redirect_folder_name(
+        self,
+        folder
+    ):
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(6)}): {inspect.stack()[0][3]}"
+        )
         self.model.set_redirect_folder_name(folder_name=folder)
 
     def set_shop_name(
@@ -91,7 +134,10 @@ class RedirectController:
         shop_name,
         show_error_message,
     ):
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(7)}): {inspect.stack()[0][3]}"
+        )
         self.model.set_shop_name(
             shop_name=shop_name,
             show_error_message=show_error_message
@@ -102,25 +148,41 @@ class RedirectController:
         show_error_message,
         log_error_message,
     ):
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(7)}): {inspect.stack()[0][3]}"
+        )
         self.model.generate_csv_file(
             show_error_message=show_error_message,
             log_error_message=log_error_message,
         )
     
-    def get_default_directory(self) -> str:
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+    def get_default_directory(
+        self
+    ) -> str:
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(5)}): {inspect.stack()[0][3]}"
+        )
         return self.model.get_default_directory()
     
-    def must_update_edt_redirect_folder_location(self) -> bool:
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+    def must_update_edt_redirect_folder_location(
+        self
+    ) -> bool:
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(5)}): {inspect.stack()[0][3]}"
+        )
         return self.model.must_update_edt_redirect_folder_location()
 
     def get_root_directory_from_source_file_name(
         self,
         source_file_name,
     ):
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(6)}): {inspect.stack()[0][3]}"
+        )
         return self.model.get_root_directory_from_source_file_name(
             source_file_name=source_file_name
         )
@@ -133,7 +195,10 @@ class RedirectController:
         lst_dict_remove_parts,
         show_error_message,
     ) -> bool:
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(9)}): {inspect.stack()[0][3]}"
+        )
         return self.validate.validate_worksheets(
             lst_dict_websites=lst_dict_websites,
             lst_dict_keywords=lst_dict_keywords,
@@ -146,7 +211,10 @@ class RedirectController:
         shop_name,
         show_error_message,
     ) -> bool:
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(7)}): {inspect.stack()[0][3]}"
+        )
         return self.validate.validate_shop_name(
             shop_name=shop_name,
             show_error_message=show_error_message,
@@ -158,7 +226,10 @@ class RedirectController:
         show_error_message,
         log_error_message,
     ) -> bool:
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(8)}): {inspect.stack()[0][3]}"
+        )
         return self.validate.validate_source_file_name(
             source_file_name=source_file_name,
             show_error_message=show_error_message,
@@ -210,11 +281,27 @@ class RedirectController:
             log_message=log_message
         )
 
+    def get_line_number(
+        self,
+        minus_lines: int,
+    ):
+        line_number = currentframe().f_back.f_lineno - minus_lines
+        return ('{: <4}'.format(str(line_number)))
+
 # OTHER
 
-    def resource_path(self, relative_path):
-        """ Get absolute path to resource, works for dev and for PyInstaller """
-        self.info(log_caller=_caller,log_message=f"{self.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")        
+    def resource_path(
+        self, 
+        relative_path
+    ):
+        self.info(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(6)}): {inspect.stack()[0][3]}"
+        )
+        self.debug(
+            log_caller=_caller,
+            log_message=f"{self.const.LogMessageFunctionParameters}: [Relative Path | {relative_path}]"
+        )
         try:
             base_path = sys._MEIPASS
         except Exception:

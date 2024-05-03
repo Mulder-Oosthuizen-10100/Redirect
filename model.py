@@ -10,41 +10,67 @@ class RedirectModel():
         controller
     ):
         self.controller = controller
-        self.shop_name = None
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageClassInitializing}: {self.__class__.__name__}"
+            log_message=f"{self.controller.const.LogMessageClassInitializing}({self.controller.get_line_number(8)}): {self.__class__.__name__}"
+        )
+        self.shop_name = None
+
+    def set_model_data(
+        self
+    ) -> bool:
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
+        )
+        
+        self.service_account = gspread.service_account()
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Service Account Loaded -> {self.service_account}"
         )
 
-    # def get_log_config(self) -> LogConfig:
-    #     return LogConfig(
-    #         log_file_location = self.get_log_file_location(),
-    #         log_file_name = self.get_log_file_name(),
-    #         log_level = LogLevel.Debug,
-    #     )
-
-    # def get_log_file_name(self) -> str:
-    #     date_time_string = datetime.now().strftime("%d-%m-%Y")
-    #     log_file_name = date_time_string + ".log"
-    #     return log_file_name
-    
-    # def get_log_file_location(self) -> str:
-    #     year_string = datetime.now().strftime("%Y") + "\\"
-    #     month_string = datetime.now().strftime("%B")
-    #     log_file_location = os.getcwd() + "\\" + "log\\" + year_string + month_string
-    #     return log_file_location
-
-    def set_model_data(self) -> bool:
-        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
-        self.service_account = gspread.service_account()
         self.sheet = self.service_account.open('WEBSITE_DATA')
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Sheet Opened -> {self.sheet}"
+        )
+
         self.worksheet_websites = self.sheet.worksheet('WEBSITES')
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Worksheet Websites Loaded -> {self.worksheet_websites}"
+        )
+
         self.worksheet_keywords = self.sheet.worksheet('KEYWORDS')
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Worksheet Keywords Loaded -> {self.worksheet_keywords}"
+        )
+
         self.worksheet_remove_parts = self.sheet.worksheet('REMOVE_PARTS')
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Worksheet Remove Parts Loaded -> {self.worksheet_remove_parts}"
+        )
 
         self.lst_dict_websites = self.worksheet_websites.get_all_records()
-        self.lst_dict_remove_parts = self.worksheet_remove_parts.get_all_records()
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): List of Dictionaries of Websites Loaded -> {self.lst_dict_websites}"
+        )
+
         self.lst_dict_keywords = self.worksheet_keywords.get_all_records()
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): List of Dictionaries of Keywords Loaded -> {self.lst_dict_keywords}"
+        )
+
+        self.lst_dict_remove_parts = self.worksheet_remove_parts.get_all_records()
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): List of Dictionaries of Remove Parts Loaded -> {self.lst_dict_remove_parts}"
+        )
 
         if self.controller.validate_worksheets(
             lst_dict_websites=self.lst_dict_websites,
@@ -52,24 +78,48 @@ class RedirectModel():
             lst_dict_remove_parts=self.lst_dict_remove_parts,
             show_error_message=True,
         ):
+            self.controller.debug(
+                log_caller=_caller,
+                log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): [TRUE]"
+            )
             return True
         else:
+            self.controller.debug(
+                log_caller=_caller,
+                log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): [FALSE]"
+            )
             return False
 
-    def get_default_directory(self) -> str:
-        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
-        return os.path.expanduser("~\\Documents")
+    def get_default_directory(
+        self
+    ) -> str:
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
+        )
+        return os.path.expanduser(
+            path="~\\Documents"
+        )
     
-    def must_update_edt_redirect_folder_location(self):
-        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+    def must_update_edt_redirect_folder_location(
+        self
+    ):
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
+        )
         return True
     
     def get_root_directory_from_source_file_name(
         self,
         source_file_name,
     ):
-        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
-        return os.path.dirname(source_file_name)
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}")
+        return os.path.dirname(
+            p=source_file_name
+        )
 
     def set_source_file_name(
         self,
@@ -77,7 +127,10 @@ class RedirectModel():
         show_error_message,
         log_error_message,
     ) -> bool:
-        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(8)}): {inspect.stack()[0][3]}"
+        )
         if self.controller.validate_source_file_name(
             source_file_name=file_name,
             show_error_message=show_error_message,
@@ -89,8 +142,14 @@ class RedirectModel():
             self.source_file_name = None
             return False
 
-    def set_redirect_folder_name(self, folder_name):
-        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+    def set_redirect_folder_name(
+        self,
+        folder_name
+    ):
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
+        )
         self.redirect_folder_name = folder_name
 
     def set_shop_name(
@@ -98,7 +157,10 @@ class RedirectModel():
         shop_name,
         show_error_message
     ):
-        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
+        )
         if self.controller.validate_shop_name(
             shop_name=shop_name,
             show_error_message=show_error_message,
@@ -110,7 +172,10 @@ class RedirectModel():
         show_error_message,
         log_error_message,
     ):
-        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(8)}): {inspect.stack()[0][3]}"
+        )
         if self.controller.validate_shop_name(
             shop_name=self.shop_name,
             show_error_message=show_error_message,
@@ -140,7 +205,10 @@ class RedirectModel():
         show_error_message,
         log_error_message,
     ) -> bool:
-        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
+        )
         date_time = datetime.now()
         date_time_string = date_time.strftime("%Y_%m_%d__%H_%M_%S")
         self.redirect_file_name = self.redirect_folder_name + '\\' + f'redirect_{date_time_string}.csv'
@@ -156,8 +224,13 @@ class RedirectModel():
             self.unmatched_redirect_file = open(self.unmatched_redirect_file_name, 'a')
             return True
 
-    def close_files(self):
-        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+    def close_files(
+        self
+    ):
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
+        )
         if self.source_file:
             self.source_file.close()
             self.redirect_file.close()
@@ -168,7 +241,10 @@ class RedirectModel():
         shop_name,
         show_error_message
     ):
-        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(8)}): {inspect.stack()[0][3]}"
+        )
         for website_remove_part in self.lst_dict_remove_parts:
             if shop_name == website_remove_part.get("WEBSITE"):
                 remove_part = website_remove_part.get("REMOVE_PART")
@@ -190,7 +266,10 @@ class RedirectModel():
         self,
         show_error_message,
     ):
-        self.controller.info(log_caller=_caller,log_message=f"{self.controller.const.LogMessageFunctionCalled}: {inspect.stack()[0][3]}")
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
+        )
         remove_part = self.get_remove_part(
             shop_name=self.shop_name,
             show_error_message=show_error_message,
