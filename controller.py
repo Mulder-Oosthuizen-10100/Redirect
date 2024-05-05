@@ -154,10 +154,6 @@ class RedirectController:
     def get_default_directory(
         self
     ) -> str:
-        # self.info(
-        #     log_caller=_caller,
-        #     log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(5)}): {inspect.stack()[0][3]}"
-        # )
         return self.model.get_default_directory()
     
     def must_update_edt_redirect_folder_location(

@@ -97,9 +97,14 @@ class RedirectModel():
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
         )
-        return os.path.expanduser(
+        p = os.path.expanduser(
             path="~\\Documents"
         )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [{p}]"
+        )
+        return p
     
     def must_update_edt_redirect_folder_location(
         self
@@ -130,6 +135,18 @@ class RedirectModel():
         self.controller.info(
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(8)}): {inspect.stack()[0][3]}"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(10)}): [Source File Name | {file_name}]"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(13)}): [Show Error Message | {show_error_message}]"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(16)}): [Log Error Message | {log_error_message}]"
         )
         if self.controller.validate_source_file_name(
             source_file_name=file_name,

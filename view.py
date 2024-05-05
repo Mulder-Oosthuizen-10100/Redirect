@@ -217,6 +217,10 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
                 log_caller=_caller,
                 log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): User has aborted the source file selection."
             )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageUserInteractionEnd}: SOURCE_FOLDER_SELECTION"
+        )
 
     def update_edt_source_folder_location(
         self,

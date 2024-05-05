@@ -136,6 +136,18 @@ class RedirectValidator():
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(12)}): {inspect.stack()[0][3]}"
         )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(14)}): [Source File Name | {source_file_name}]"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(17)}): [Show Error Message | {show_error_message}]"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(20)}): [Log Error Message | {log_error_message}]"
+        )
         try:
             if source_file_name:
                 if os.path.isfile(
