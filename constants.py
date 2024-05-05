@@ -6,36 +6,64 @@ class classproperty(object):
 
 class RedirectConstants:
     @property
-    def LogMessageApplicationStart(self):
-        return "APPLICATION_STARTED"
+    def LogMessageApplicationStarting(self):
+        return "APPLICATION_STARTING"
+    
+    @property
+    def LogMessageApplicationGUIBuilt(self):
+        return "APPLICATION_GUI_BUILT"
+
+    @property
+    def LogMessageApplicationDataRetrieved(self):
+        return "APPLICATION_DATA_RETRIEVED"
+    
+    @property
+    def LogMessageApplicationClosing(self):
+        return "APPLICATION_CLOSING"
+    
+    @property
+    def LogMessageUserInteractionStart(self):
+        return "USER_INTERACTION_START"
+
+    @property
+    def LogMessageUserInteractionEnd(self):
+        return "USER_INTERACTION_END"
 
     @property
     def LogMessageClassInitializing(self):
-        return "  CLASS_INITIALIZING"
+        return " CLASS_INITIALIZING    "
 
     @property
     def LogMessageClassInitialized(self):
-        return "    CLASS_INITIALIZED"
+        return " CLASS_INITIALIZED     "
     
     @property
     def LogMessageFunctionCalled(self):
-        return "      FUNCTION_CALLED"
+        return "  FUNCTION_CALLED      "
     
     @property
     def LogMessageFunctionStatement(self):
-        return "        FUNCTION_STATEMENT"
+        return "   FUNCTION_STATEMENT  "
 
     @property
     def LogMessageFunctionReturned(self):
-        return "        FUNCTION_RETURNED"
+        return "   FUNCTION_RETURNED   "
     
     @property
     def LogMessageFunctionParameters(self):
-        return "        FUNCTION_PARAMETERS"
+        return "   FUNCTION_PARAMETERS "
+
+    @property
+    def LogMessageForLoop(self):
+        return "   FOR_LOOP            "
 
     @property
     def PathRedirectLogo(self):
         return "images\\RedirectLogo.ico"
+    
+    @property
+    def TitleSourceFileDialog(self):
+        return "Select the Source File that contains the URLs with 404 errors."
 
     @classproperty
     def ConfigurationFileName(self) -> str:

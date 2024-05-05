@@ -20,6 +20,11 @@ class ShopListFrame(ctk.CTkScrollableFrame):
         super().__init__(master, **kwargs)
 
         self.controller = controller
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageClassInitializing}({self.controller.get_line_number(12)}): {self.__class__.__name__}"
+        )
+
         self.grid_columnconfigure(0, weight=1)
         self.lst_rdbtn_shops = []
         self.rdbtn_var = ctk.StringVar(value="off")
@@ -46,29 +51,42 @@ class ShopListFrame(ctk.CTkScrollableFrame):
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
         )
         self.lbl_loading.destroy()
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Loading Label Destroyed."
+        )
+
         for shop in lst_dict_websites:
             self.grid_rowconfigure(self.row_count, weight=1)
-            self.lst_rdbtn_shops.append(
-                ctk.CTkRadioButton(
-                    master=self,
-                    text=shop.get('WEBSITE'),
-                    font=('JetBrains Mono',14),
-                    variable=self.rdbtn_var,
-                    value=shop.get('WEBSITE'),
-                    command=self.rdbtn_selected,
-                ).grid(
-                    row=self.row_count,
-                    column=0,
-                    pady=(20,0),
-                    padx=20,
-                    sticky='ew',
-                )
+            ctk.CTkRadioButton(
+                master=self,
+                text=shop.get('WEBSITE'),
+                font=('JetBrains Mono',14),
+                variable=self.rdbtn_var,
+                value=shop.get('WEBSITE'),
+                command=self.rdbtn_selected,
+            ).grid(
+                row=self.row_count,
+                column=0,
+                pady=(20,0),
+                padx=20,
+                sticky='ew',
             )
+
+            self.controller.debug(
+                log_caller=_caller,
+                log_message=f"{self.controller.const.LogMessageForLoop}[{self.controller.get_line_number(self.row_count,True)}]: Item Added -> {shop}"
+            )
+
             self.row_count += 1
 
     def rdbtn_selected(
         self
     ):
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageUserInteractionStart}: SHOP_SELECTION"
+        )
         self.controller.info(
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
@@ -77,12 +95,26 @@ class ShopListFrame(ctk.CTkScrollableFrame):
             shop_name=self.rdbtn_var.get(),
             show_error_message=True
         )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageUserInteractionEnd}: SHOP_SELECTION"
+        )
 
 class SourceFolderLocationFrame(ctk.CTkFrame):
-    def __init__(self, master, controller, **kwargs):
+    def __init__(
+        self,
+        master,
+        controller,
+        **kwargs
+    ):
         super().__init__(master, **kwargs)
 
         self.controller = controller
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageClassInitializing}({self.controller.get_line_number(11)}): {self.__class__.__name__}"
+        )
+
         self.edt_text_var = ctk.StringVar(value=self.controller.get_default_directory())
         self.controller.set_source_file_name(
             file_name=self.edt_text_var.get(),
@@ -145,17 +177,33 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         show_error_message,
         log_error_message,
     ):
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageUserInteractionStart}: SOURCE_FOLDER_SELECTION"
+        )
         self.controller.info(
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
         )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(13)}): [Show Error Message | {show_error_message}]"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(17)}): [Log Error Message | {log_error_message}]"
+        )
         file_name = filedialog.askopenfilename(
-            title="Open the Source URL File",
+            title=self.controller.const.TitleSourceFileDialog,
             initialdir=self.controller.get_default_directory(),
             defaultextension=".txt",
             filetypes=[("Text Files",".txt")],
         )
         if file_name:
+            self.controller.debug(
+                log_caller=_caller,
+                log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): User has selected a source file."
+            )
             if self.controller.set_source_file_name(
                 file_name=file_name,
                 show_error_message=show_error_message,
@@ -164,6 +212,11 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
                 self.update_edt_source_folder_location(
                     new_text=file_name
                 )
+        else:
+            self.controller.debug(
+                log_caller=_caller,
+                log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): User has aborted the source file selection."
+            )
 
     def update_edt_source_folder_location(
         self,
@@ -182,10 +235,20 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
             )
 
 class RedirectFolderLocationFrame(ctk.CTkFrame):
-    def __init__(self, master, controller, **kwargs):
+    def __init__(
+        self,
+        master,
+        controller,
+        **kwargs
+    ):
         super().__init__(master, **kwargs)
 
         self.controller = controller
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageClassInitializing}({self.controller.get_line_number(11)}): {self.__class__.__name__}"
+        )
+
         self.edt_text_var = ctk.StringVar(value=self.controller.get_default_directory())
         self.controller.set_redirect_folder_name(self.edt_text_var.get())
         self.grid_columnconfigure(0, weight=1)
@@ -314,6 +377,10 @@ class MainWindow(ctk.CTk):
             loading_text="Loading",
             corner_radius=16,
         )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageClassInitialized}({self.controller.get_line_number(8)}): {self.frm_shop_list.__class__.__name__}"
+        )
         
         self.frm_shop_list.grid(
             row=1,
@@ -328,7 +395,13 @@ class MainWindow(ctk.CTk):
             controller=controller,
             master=self,
             corner_radius=16,
-        ).grid(
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageClassInitialized}({self.controller.get_line_number(7)}): {self.frm_source_location.__class__.__name__}"
+        )
+        
+        self.frm_source_location.grid(
             row=1,
             column=1,
             padx=60,
@@ -340,6 +413,10 @@ class MainWindow(ctk.CTk):
             controller=controller,
             master=self,
             corner_radius=16,
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageClassInitialized}({self.controller.get_line_number(7)}): {self.frm_redirect_location.__class__.__name__}"
         )
 
         self.frm_redirect_location.grid(
@@ -436,8 +513,7 @@ class RedirectView:
             log_message=f"{self.controller.const.LogMessageClassInitialized}({self.controller.get_line_number(5)}): {self.root.__class__.__name__}"
         )
         self.root.eval('tk::PlaceWindow . center')
-        
-    
+
     def open_message(
         self,
         text_message,
@@ -471,3 +547,28 @@ class RedirectView:
         )
         self.sub_root.destroy()
         self.sub_root = None
+    
+    def add_shops(
+        self,
+        lst_dict_websites,
+    ):
+        self.root.frm_shop_list.add_shops(
+            lst_dict_websites=lst_dict_websites,
+        )
+
+    def update_edt_redirect_folder_location(
+        self,
+        new_text,
+    ):
+        self.root.frm_redirect_location.update_edt_redirect_folder_location(
+            new_text=new_text
+        )
+    
+    def close_application(
+        self,
+    ):
+        self.controller.info(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
+        )        
+        self.root.destroy()

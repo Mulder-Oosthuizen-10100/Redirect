@@ -80,13 +80,13 @@ class RedirectModel():
         ):
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): [TRUE]"
+                log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [TRUE]"
             )
             return True
         else:
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): [FALSE]"
+                log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
             )
             return False
 
@@ -137,9 +137,17 @@ class RedirectModel():
             log_error_message=log_error_message,
         ):
             self.source_file_name = file_name
+            self.controller.debug(
+                log_caller=_caller,
+                log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [TRUE]"
+            )
             return True
         else:
             self.source_file_name = None
+            self.controller.debug(
+                log_caller=_caller,
+                log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
+            )
             return False
 
     def set_redirect_folder_name(
@@ -160,6 +168,14 @@ class RedirectModel():
         self.controller.info(
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(9)}): [Shop Name | {shop_name}]"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(12)}): [Show Error Message | {show_error_message}]"
         )
         if self.controller.validate_shop_name(
             shop_name=shop_name,
