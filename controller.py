@@ -138,14 +138,18 @@ class RedirectController:
         show_error_message,
         log_error_message,
     ):
-        # self.info(
-        #     log_caller=_caller,
-        #     log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(7)}): {inspect.stack()[0][3]}"
-        # )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageUserInteractionStart}: GENERATE_CSV_FILE"
+        )
         self.model.generate_csv_file(
             show_error_message=show_error_message,
             log_error_message=log_error_message,
         )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageUserInteractionEnd}: GENERATE_CSV_FILE"
+        )        
     
     def get_default_directory(
         self

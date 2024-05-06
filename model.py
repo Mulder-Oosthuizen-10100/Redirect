@@ -227,6 +227,14 @@ class RedirectModel():
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(8)}): {inspect.stack()[0][3]}"
         )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(9)}): [Show Error Message | {show_error_message}]"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(11)}): [Log Error Message | {log_error_message}]"
+        )
         if self.controller.validate_shop_name(
             shop_name=self.shop_name,
             show_error_message=show_error_message,
@@ -236,6 +244,10 @@ class RedirectModel():
                 log_error_message=log_error_message,
             ):
                 try:
+                    self.controller.debug(
+                        log_caller=_caller,
+                        log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): TRY..."
+                    )
                     self.internal_generate_csv_file(
                         show_error_message=show_error_message,
                     )
@@ -244,11 +256,19 @@ class RedirectModel():
                         close_application=False,
                     )
                 except Exception as e:
+                    self.controller.debug(
+                        log_caller=_caller,
+                        log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): ...EXCEPT..."
+                    )
                     self.controller.open_message(
                         text_message=f"An Error occurred during the redirect process! Error Message: {e}",
                         close_application=False,
                     )
                 finally:
+                    self.controller.debug(
+                        log_caller=_caller,
+                        log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): ...FINALLY"
+                    )
                     self.close_files()
 
     def open_files(
@@ -259,6 +279,14 @@ class RedirectModel():
         self.controller.info(
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(9)}): [Show Error Message | {show_error_message}]"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(12)}): [Log Error Message | {log_error_message}]"
         )
         date_time = datetime.now()
         date_time_string = date_time.strftime("%Y_%m_%d__%H_%M_%S")
@@ -271,8 +299,24 @@ class RedirectModel():
             log_error_message=log_error_message,
         ):
             self.source_file = open(self.source_file_name, 'r')
+            self.controller.debug(
+                log_caller=_caller,
+                log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Source File Opened -> {self.source_file}"
+            )
             self.redirect_file = open(self.redirect_file_name, 'a')
+            self.controller.debug(
+                log_caller=_caller,
+                log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Redirect File Opened -> {self.redirect_file}"
+            )
             self.unmatched_redirect_file = open(self.unmatched_redirect_file_name, 'a')
+            self.controller.debug(
+                log_caller=_caller,
+                log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Unmatched Redirect File Opened -> {self.unmatched_redirect_file}"
+            )
+            self.controller.debug(
+                log_caller=_caller,
+                log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [TRUE]"
+            )
             return True
 
     def close_files(
@@ -294,7 +338,15 @@ class RedirectModel():
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(8)}): {inspect.stack()[0][3]}"
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(9)}): [Shop Name | {shop_name}]"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(12)}): [Show Error Message | {show_error_message}]"
         )
         for website_remove_part in self.lst_dict_remove_parts:
             if shop_name == website_remove_part.get("WEBSITE"):
@@ -320,6 +372,10 @@ class RedirectModel():
         self.controller.info(
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(9)}): [Show Error Message | {show_error_message}]"
         )
         remove_part = self.get_remove_part(
             shop_name=self.shop_name,
