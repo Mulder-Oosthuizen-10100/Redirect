@@ -121,10 +121,6 @@ class RedirectController:
         self,
         folder
     ):
-        # self.info(
-        #     log_caller=_caller,
-        #     log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(6)}): {inspect.stack()[0][3]}"
-        # )
         self.model.set_redirect_folder_name(folder_name=folder)
 
     def set_shop_name(
@@ -159,20 +155,12 @@ class RedirectController:
     def must_update_edt_redirect_folder_location(
         self
     ) -> bool:
-        # self.info(
-        #     log_caller=_caller,
-        #     log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(5)}): {inspect.stack()[0][3]}"
-        # )
         return self.model.must_update_edt_redirect_folder_location()
 
     def get_root_directory_from_source_file_name(
         self,
         source_file_name,
     ):
-        # self.info(
-        #     log_caller=_caller,
-        #     log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(6)}): {inspect.stack()[0][3]}"
-        # )
         return self.model.get_root_directory_from_source_file_name(
             source_file_name=source_file_name
         )

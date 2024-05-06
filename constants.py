@@ -65,6 +65,14 @@ class RedirectConstants:
     def TitleSourceFileDialog(self):
         return "Select the Source File that contains the URLs with 404 errors."
 
+    @property
+    def TitleDestinationFolderDialog(self):
+        return "Select the Destination Folder where the redirect CSV file will be placed."
+
+    @property
+    def ResultMustUpdateRedirectFolder(self):
+        return True
+
     @classproperty
     def ConfigurationFileName(self) -> str:
         return "Redirect.ini"

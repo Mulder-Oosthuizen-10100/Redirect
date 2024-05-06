@@ -50,6 +50,10 @@ class ShopListFrame(ctk.CTkScrollableFrame):
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
         )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(8)}): [List of Dictionaries of Websites | {lst_dict_websites}]"
+        )
         self.lbl_loading.destroy()
         self.controller.debug(
             log_caller=_caller,
@@ -179,7 +183,7 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
     ):
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageUserInteractionStart}: SOURCE_FOLDER_SELECTION"
+            log_message=f"{self.controller.const.LogMessageUserInteractionStart}: SOURCE_FILE_SELECTION"
         )
         self.controller.info(
             log_caller=_caller,
@@ -219,7 +223,7 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
             )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageUserInteractionEnd}: SOURCE_FOLDER_SELECTION"
+            log_message=f"{self.controller.const.LogMessageUserInteractionEnd}: SOURCE_FILE_SELECTION"
         )
 
     def update_edt_source_folder_location(
@@ -229,6 +233,10 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         self.controller.info(
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(8)}): [New Text | {new_text}]"
         )
         self.edt_text_var.set(new_text)
         if self.controller.must_update_edt_redirect_folder_location():
@@ -306,17 +314,29 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
     def open_redirect_folder(
         self
     ):
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageUserInteractionStart}: REDIRECT_FOLDER_SELECTION"
+        )
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(9)}): {inspect.stack()[0][3]}"
         )
         folder = filedialog.askdirectory(
-            title="Select a destination folder for the CSV file",
+            title=self.controller.const.TitleDestinationFolderDialog,
             initialdir=self.edt_text_var.get(),
         )
         if folder:
+            self.controller.debug(
+                log_caller=_caller,
+                log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): User has selected a folder."
+            )
             self.controller.set_redirect_folder_name(folder)
             self.update_edt_redirect_folder_location(folder)
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageUserInteractionEnd}: REDIRECT_FOLDER_SELECTION"
+        )
     
     def update_edt_redirect_folder_location(
         self,
@@ -326,7 +346,15 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
         )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(8)}): [New Text | {new_text}]"
+        )
         self.edt_text_var.set(new_text)
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Entry Redirect Folder Location Updated."
+        )
 
 class MainWindow(ctk.CTk):
     def __init__(

@@ -113,7 +113,11 @@ class RedirectModel():
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
         )
-        return True
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [{self.controller.const.ResultMustUpdateRedirectFolder}]"
+        )
+        return self.controller.const.ResultMustUpdateRedirectFolder
     
     def get_root_directory_from_source_file_name(
         self,
@@ -121,10 +125,20 @@ class RedirectModel():
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}")
-        return os.path.dirname(
+            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(-2)}): [Source File Name | {source_file_name}]"
+        )
+        p = os.path.dirname(
             p=source_file_name
         )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [{p}]"
+        )
+        return p
 
     def set_source_file_name(
         self,
@@ -174,6 +188,10 @@ class RedirectModel():
         self.controller.info(
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(8)}): [Folder Name | {folder_name}]"
         )
         self.redirect_folder_name = folder_name
 
