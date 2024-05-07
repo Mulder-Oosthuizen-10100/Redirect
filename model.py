@@ -327,6 +327,10 @@ class RedirectModel():
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
         )
         if self.source_file:
+            self.controller.debug(
+                log_caller=_caller,
+                log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Source File Opened -> Closing Other Files"
+            )
             self.source_file.close()
             self.redirect_file.close()
             self.unmatched_redirect_file.close()
@@ -352,6 +356,10 @@ class RedirectModel():
             if shop_name == website_remove_part.get("WEBSITE"):
                 remove_part = website_remove_part.get("REMOVE_PART")
                 if remove_part:
+                    self.controller.debug(
+                        log_caller=_caller,
+                        log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [{remove_part}]"
+                    )
                     return remove_part
                 else:
                     if show_error_message:
@@ -363,7 +371,11 @@ class RedirectModel():
                         log_caller=_caller,
                         log_message=f"There are no remove parts for shop '{shop_name}'.",
                     )
-                    return ""
+                    self.controller.debug(
+                        log_caller=_caller,
+                        log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [{self.controller.const.EmptyString}]"
+                    )
+                    return self.controller.const.EmptyString
     
     def internal_generate_csv_file(
         self,
@@ -391,19 +403,41 @@ class RedirectModel():
                 ""
             )
             line = line.lower()
+            self.controller.debug(
+                log_caller=_caller,
+                log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Processed Line -> {line}"
+            )
 
             for dict_keyword in self.lst_dict_keywords:
                 if dict_keyword.get('WEBSITE') == self.shop_name:
                     found_keyword = False
-                    if dict_keyword.get('KEYWORD').lower() in line:
-                        self.redirect_file.write(line + '*,' + dict_keyword.get('URL') + "\n")
+                    keyword = dict_keyword.get('KEYWORD').lower()
+                    if keyword in line:
+                        final_line = line + '*,' + dict_keyword.get('URL') 
+                        self.redirect_file.write(final_line + "\n")
+                        self.controller.debug(
+                            log_caller=_caller,
+                            log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Final Line with Keyword [{keyword}] -> {final_line}"
+                        )
                         found_keyword = True
                         break
 
             if not found_keyword:
+                self.controller.debug(
+                    log_caller=_caller,
+                    log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): No matching Keyword found for Processed Line -> {line}"
+                )
                 self.unmatched_redirect_file.write(line + "\n")
                 for dict_keyword in self.lst_dict_keywords:
                     if dict_keyword.get('WEBSITE') == self.shop_name:
                         if dict_keyword.get('DEFAULT') == 'TRUE':
                             self.redirect_file.write(line + '*,' + dict_keyword.get('URL') + "\n")
+                            self.controller.debug(
+                                log_caller=_caller,
+                                log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): No matching Keyword found applying default -> {dict_keyword.get('KEYWORD').lower()} ({dict_keyword.get('URL')})"
+                            )
                             break
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(0)}): {inspect.stack()[0][3]} -> [None]"
+        )

@@ -70,6 +70,10 @@ class RedirectConstants:
         return "Select the Destination Folder where the redirect CSV file will be placed."
 
     @property
+    def EmptyString(self) -> str:
+        return ""
+
+    @property
     def ResultMustUpdateRedirectFolder(self):
         return True
 
