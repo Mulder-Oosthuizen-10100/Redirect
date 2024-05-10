@@ -6,7 +6,7 @@ from model import RedirectModel
 from constants import RedirectConstants
 from configurator import RedirectConfiguration
 from inspect import *
-import os, sys, inspect
+import os, sys, inspect, ctypes
 
 _caller: LogCaller = LogCaller.Controller
 
@@ -287,17 +287,29 @@ class RedirectController:
 
         return os.path.join(base_path, relative_path)
 
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
 if __name__ == "__main__":
-    configuration = RedirectConfiguration()
 
-    logger = RedirectLogger(
-        log_config=RedirectLogger.get_log_config()
-    )
+    if is_admin():
+        # Code of your program here
+        configuration = RedirectConfiguration()
 
-    logger.log_level = configuration.LogLevel
+        logger = RedirectLogger(
+            log_config=RedirectLogger.get_log_config()
+        )
 
-    print(f"Log Level: {configuration.LogLevel}")
-    
-    controller = RedirectController(
-        logger=logger
-    )
+        logger.log_level = configuration.LogLevel
+
+        print(f"Log Level: {configuration.LogLevel}")
+        
+        controller = RedirectController(
+            logger=logger
+        )        
+    else:
+        # Re-run the program with admin rights
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__.join(sys.argv), None, 1)
