@@ -1,5 +1,6 @@
 import os, inspect
 from type import LogCaller
+from constants import RedirectConstants
 
 _caller: LogCaller = LogCaller.Validator
 
@@ -11,7 +12,7 @@ class RedirectValidator():
         self.controller = controller
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageClassInitializing}({self.controller.get_line_number(7)}): {self.__class__.__name__}"
+            log_message=f"{RedirectConstants.LogMessageClassInitializing}({self.controller.get_line_number(7)}): {self.__class__.__name__}"
         )
 
     def validate_worksheets(
@@ -23,63 +24,63 @@ class RedirectValidator():
     ) -> bool:
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(9)}): {inspect.stack()[0][3]}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(9)}): {inspect.stack()[0][3].capitalize}"
         )
         if lst_dict_websites:
             if lst_dict_keywords:
                 if lst_dict_remove_parts:
                     self.controller.debug(
                         log_caller=_caller,
-                        log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): ALL Worksheets are valid."
+                        log_message=f"{RedirectConstants.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): ALL Worksheets are valid."
                     )                    
                     self.controller.debug(
                         log_caller=_caller,
-                        log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [TRUE]"
+                        log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [TRUE]"
                     )
                     return True
                 else:
                     if show_error_message:
                         self.controller.open_message(
-                            text_message="Google Sheet does not contain any remove parts!",
+                            text_message=RedirectConstants.ValidateErrorMessageNoRemoveParts,
                             close_application=True,
                         )
                     self.controller.error(
                         log_caller=_caller,
-                        log_message=f"Google Sheet Document '{self.controller.const.GoogleSheetDocumentName}' does not contain any REMOVE_PART entries in the REMOVE_PARTS tab.",
+                        log_message=f"Google Sheet Document '{RedirectConstants.GoogleSheetDocumentName}' does not contain any REMOVE_PART entries in the REMOVE_PARTS tab.",
                     )
                     self.controller.debug(
                         log_caller=_caller,
-                        log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
+                        log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
                     )
                     return False
             else:
                 if show_error_message:
                     self.controller.open_message(
-                        text_message="Google Sheet does not contain any keywords!",
+                        text_message=RedirectConstants.ValidateErrorMessageNoKeyWords,
                         close_application=True,
                     )
                 self.controller.error(
                     log_caller=_caller,
-                    log_message=f"Google Sheet Document '{self.controller.const.GoogleSheetDocumentName}' does not contain any KEYWORD entries in the KEYWORDS tab.",
+                    log_message=f"Google Sheet Document '{RedirectConstants.GoogleSheetDocumentName}' does not contain any KEYWORD entries in the KEYWORDS tab.",
                 )
                 self.controller.debug(
                     log_caller=_caller,
-                    log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
+                    log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
                 )
                 return False
         else:
             if show_error_message:
                 self.controller.open_message(
-                    text_message="Google Sheet does not contain any websites!",
+                    text_message=RedirectConstants.ValidateErrorMessageNoWebsites,
                     close_application=True,
                 )
             self.controller.error(
                 log_caller=_caller,
-                log_message=f"Google Sheet Document '{self.controller.const.GoogleSheetDocumentName}' does not contain any WEBSITE entries in the WEBSITES tab.",
+                log_message=f"Google Sheet Document '{RedirectConstants.GoogleSheetDocumentName}' does not contain any WEBSITE entries in the WEBSITES tab.",
             )
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
+                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
             )
             return False
 
@@ -90,20 +91,20 @@ class RedirectValidator():
     ) -> bool:
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3].capitalize}"
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(9)}): [Shop Name | {shop_name}]"
+            log_message=f"{RedirectConstants.LogMessageFunctionParameters}({self.controller.get_line_number(9)}): [Shop Name | {shop_name}]"
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(12)}): [Show Error Message | {show_error_message}]"
+            log_message=f"{RedirectConstants.LogMessageFunctionParameters}({self.controller.get_line_number(12)}): [Show Error Message | {show_error_message}]"
         )
         if not shop_name:
             if show_error_message:
                 self.controller.open_message(
-                    text_message="Please select a shop name!",
+                    text_message=RedirectConstants.ValidateErrorMessageNoShop,
                     close_application=False,
                 )
             self.controller.error(
@@ -112,13 +113,13 @@ class RedirectValidator():
             )
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
+                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
             )
             return False
         else:
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [TRUE]"
+                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [TRUE]"
             )
             return True
 
@@ -133,15 +134,15 @@ class RedirectValidator():
         '''
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(12)}): {inspect.stack()[0][3]}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(12)}): {inspect.stack()[0][3].capitalize}"
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(14)}): [Source File Name | {source_file_name}]"
+            log_message=f"{RedirectConstants.LogMessageFunctionParameters}({self.controller.get_line_number(14)}): [Source File Name | {source_file_name}]"
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(17)}): [Show Error Message | {show_error_message}]"
+            log_message=f"{RedirectConstants.LogMessageFunctionParameters}({self.controller.get_line_number(17)}): [Show Error Message | {show_error_message}]"
         )
         try:
             if source_file_name:
@@ -153,13 +154,13 @@ class RedirectValidator():
                     ).st_size > 0:
                         self.controller.debug(
                             log_caller=_caller,
-                            log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [TRUE]"
+                            log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [TRUE]"
                         )
                         return True
                     else:
                         if show_error_message:
                             self.controller.open_message(
-                                text_message="The selected source file is empty!",
+                                text_message=RedirectConstants.ValidateErrorMessageSourceFileEmpty,
                                 close_application=False,
                             )
                         self.controller.error(
@@ -168,13 +169,13 @@ class RedirectValidator():
                         )
                         self.controller.debug(
                             log_caller=_caller,
-                            log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
+                            log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
                         )
                         return False
                 else:
                     if show_error_message:
                         self.controller.open_message(
-                            text_message="The selected source file is not a file!",
+                            text_message=RedirectConstants.ValidateErrorMessageSourceFileNotAFile,
                             close_application=False,
                         )
                     self.controller.error(
@@ -183,13 +184,13 @@ class RedirectValidator():
                     )
                     self.controller.debug(
                         log_caller=_caller,
-                        log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
+                        log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
                     )
                     return False
             else:
                 if show_error_message:
                     self.controller.open_message(
-                        text_message="Please select a source file!",
+                        text_message=RedirectConstants.ValidateErrorMessageSourceFileNotSelected,
                         close_application=False,
                     )
                 self.controller.error(
@@ -198,13 +199,13 @@ class RedirectValidator():
                 )
                 self.controller.debug(
                     log_caller=_caller,
-                    log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
+                    log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
                 )
                 return False
         except OSError as e:
             if show_error_message:
                 self.controller.open_message(
-                    text_message="Source File: DOES NOT EXIST\nPlease see the log file for more detail.",
+                    text_message=RedirectConstants.ValidateExceptionMessageSourceFileNotExist,
                     close_application=False,
                 )
             self.controller.exception(
@@ -213,13 +214,13 @@ class RedirectValidator():
             )
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
+                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
             )
             return False
         except Exception as e:
             if show_error_message:
                 self.controller.open_message(
-                    text_message="An unknown exception occurred!\nPlease see the log file for more detail.",
+                    text_message=RedirectConstants.ValidateExceptionMessage,
                     close_application=False,
                 )
             self.controller.exception(
@@ -228,6 +229,6 @@ class RedirectValidator():
             )
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
+                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
             )
             return False

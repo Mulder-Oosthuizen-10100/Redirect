@@ -16,11 +16,10 @@ class RedirectController:
         logger: RedirectLogger,
     ):
         self.logger = logger
-        self.const = RedirectConstants()
         
         self.info(
             log_caller=_caller,
-            log_message=self.const.LogMessageApplicationStarting
+            log_message=RedirectConstants.LogMessageApplicationStarting
         )
         
         self.model = RedirectModel(
@@ -28,24 +27,24 @@ class RedirectController:
         )
         self.info(
             log_caller=_caller,
-            log_message=f"{self.const.LogMessageClassInitialized}({self.get_line_number(5)}): {self.model.__class__.__name__}"
+            log_message=f"{RedirectConstants.LogMessageClassInitialized}({self.get_line_number(5)}): {self.model.__class__.__name__}"
         )
 
         self.validate = RedirectValidator(controller=self)
         self.info(
             log_caller=_caller,
-            log_message=f"{self.const.LogMessageClassInitialized}({self.get_line_number(3)}): {self.validate.__class__.__name__}"
+            log_message=f"{RedirectConstants.LogMessageClassInitialized}({self.get_line_number(3)}): {self.validate.__class__.__name__}"
         )
         
         self.view = RedirectView(controller=self)
         self.info(
             log_caller=_caller,
-            log_message=f"{self.const.LogMessageClassInitialized}({self.get_line_number(3)}): {self.view.__class__.__name__}"
+            log_message=f"{RedirectConstants.LogMessageClassInitialized}({self.get_line_number(3)}): {self.view.__class__.__name__}"
         )
 
         self.info(
             log_caller=_caller,
-            log_message=f"{self.const.LogMessageApplicationGUIBuilt}"
+            log_message=f"{RedirectConstants.LogMessageApplicationGUIBuilt}"
         )
 
         self.view.root.after(500, self.add_shops)
@@ -53,7 +52,7 @@ class RedirectController:
 
         self.info(
             log_caller=_caller,
-            log_message=f"{self.const.LogMessageApplicationClosing}"
+            log_message=f"{RedirectConstants.LogMessageApplicationClosing}"
         )
 
 # VIEW
@@ -80,7 +79,7 @@ class RedirectController:
     ):
         self.info(
             log_caller=_caller,
-            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(5)}): {inspect.stack()[0][3]}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.get_line_number(5)}): {inspect.stack()[0][3].capitalize}"
         )
         if self.model.set_model_data():
             self.view.add_shops(
@@ -88,7 +87,7 @@ class RedirectController:
             )
             self.debug(
                 log_caller=_caller,
-                log_message=f"{self.const.LogMessageApplicationDataRetrieved}"
+                log_message=f"{RedirectConstants.LogMessageApplicationDataRetrieved}"
             )
 
     def update_edt_redirect_folder_location(
@@ -137,14 +136,14 @@ class RedirectController:
     ):
         self.debug(
             log_caller=_caller,
-            log_message=f"{self.const.LogMessageUserInteractionStart}: GENERATE_CSV_FILE"
+            log_message=f"{RedirectConstants.LogMessageUserInteractionStart}: {inspect.stack()[0][3].capitalize}"
         )
         self.model.generate_csv_file(
             show_error_message=show_error_message,
         )
         self.debug(
             log_caller=_caller,
-            log_message=f"{self.const.LogMessageUserInteractionEnd}: GENERATE_CSV_FILE"
+            log_message=f"{RedirectConstants.LogMessageUserInteractionEnd}: {inspect.stack()[0][3].capitalize}"
         )        
     
     def get_default_directory(
@@ -272,18 +271,17 @@ class RedirectController:
             )
 
 # OTHER
-
     def resource_path(
         self, 
         relative_path
     ):
         self.info(
             log_caller=_caller,
-            log_message=f"{self.const.LogMessageFunctionCalled}({self.get_line_number(6)}): {inspect.stack()[0][3]}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.get_line_number(6)}): {inspect.stack()[0][3].capitalize}"
         )
         self.debug(
             log_caller=_caller,
-            log_message=f"{self.const.LogMessageFunctionParameters}({self.get_line_number(8)}): [Relative Path | {relative_path}]"
+            log_message=f"{RedirectConstants.LogMessageFunctionParameters}({self.get_line_number(8)}): [Relative Path | {relative_path}]"
         )
         try:
             base_path = sys._MEIPASS
@@ -299,7 +297,6 @@ def is_admin():
         return False
 
 if __name__ == "__main__":
-
     # if is_admin():
         configuration = RedirectConfiguration()
 

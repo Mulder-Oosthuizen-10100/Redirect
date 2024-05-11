@@ -3,9 +3,10 @@ import inspect
 from tkinter import filedialog
 from PIL import Image
 from type import *
+from constants import RedirectConstants
 
-ctk.set_appearance_mode("System")
-ctk.set_default_color_theme("dark-blue")
+ctk.set_appearance_mode(RedirectConstants.AppearanceModeSystem)
+ctk.set_default_color_theme(RedirectConstants.DefaultColorTheme)
 
 _caller: LogCaller = LogCaller.View
 
@@ -22,7 +23,7 @@ class ShopListFrame(ctk.CTkScrollableFrame):
         self.controller = controller
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageClassInitializing}({self.controller.get_line_number(12)}): {self.__class__.__name__}"
+            log_message=f"{RedirectConstants.LogMessageClassInitializing}({self.controller.get_line_number(12)}): {self.__class__.__name__}"
         )
 
         self.grid_columnconfigure(0, weight=1)
@@ -34,7 +35,10 @@ class ShopListFrame(ctk.CTkScrollableFrame):
         self.lbl_loading = ctk.CTkLabel(
             master=self,
             text=self.lbl_loading_var.get(),
-            font=('JetBrains Mono', 18),
+            font=(
+                RedirectConstants.TextFontFamily,
+                RedirectConstants.MediumTextSize,
+            ),
         )
 
         self.lbl_loading.grid(
@@ -48,26 +52,29 @@ class ShopListFrame(ctk.CTkScrollableFrame):
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3].capitalize}"
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(8)}): [List of Dictionaries of Websites | {lst_dict_websites}]"
+            log_message=f"{RedirectConstants.LogMessageFunctionParameters}({self.controller.get_line_number(8)}): [List of Dictionaries of Websites | {lst_dict_websites}]"
         )
         self.lbl_loading.destroy()
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Loading Label Destroyed."
+            log_message=f"{RedirectConstants.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Loading Label Destroyed."
         )
 
         for shop in lst_dict_websites:
             self.grid_rowconfigure(self.row_count, weight=1)
-            loop_shop_name = shop.get('WEBSITE')
+            loop_shop_name = shop.get(RedirectConstants.KeyWebsite)
             self.rdbtn_var.set(loop_shop_name)
             ctk.CTkRadioButton(
                 master=self,
                 text=loop_shop_name,
-                font=('JetBrains Mono',14),
+                font=(
+                    RedirectConstants.TextFontFamily,
+                    RedirectConstants.SmallTextSize,
+                ),
                 variable=self.rdbtn_var,
                 value=loop_shop_name,
                 command=self.rdbtn_selected,
@@ -81,7 +88,7 @@ class ShopListFrame(ctk.CTkScrollableFrame):
 
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{self.controller.const.LogMessageForLoop}[{self.controller.get_line_number(self.row_count,True)}]: Item Added -> {shop}"
+                log_message=f"{RedirectConstants.LogMessageForLoop}[{self.controller.get_line_number(self.row_count,True)}]: Item Added -> {shop}"
             )
 
             self.row_count += 1
@@ -92,7 +99,7 @@ class ShopListFrame(ctk.CTkScrollableFrame):
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(6)}): Auto selected shop -> {loop_shop_name}."
+            log_message=f"{RedirectConstants.LogMessageFunctionStatement}({self.controller.get_line_number(6)}): Auto selected shop -> {loop_shop_name}."
         )
 
     def rdbtn_selected(
@@ -100,11 +107,11 @@ class ShopListFrame(ctk.CTkScrollableFrame):
     ):
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageUserInteractionStart}: SHOP_SELECTION"
+            log_message=f"{RedirectConstants.LogMessageUserInteractionStart}: SHOP_SELECTION"
         )
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3].capitalize}"
         )
         self.controller.set_shop_name(
             shop_name=self.rdbtn_var.get(),
@@ -112,7 +119,7 @@ class ShopListFrame(ctk.CTkScrollableFrame):
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageUserInteractionEnd}: SHOP_SELECTION"
+            log_message=f"{RedirectConstants.LogMessageUserInteractionEnd}: SHOP_SELECTION"
         )
 
 class SourceFolderLocationFrame(ctk.CTkFrame):
@@ -127,7 +134,7 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         self.controller = controller
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageClassInitializing}({self.controller.get_line_number(11)}): {self.__class__.__name__}"
+            log_message=f"{RedirectConstants.LogMessageClassInitializing}({self.controller.get_line_number(11)}): {self.__class__.__name__}"
         )
 
         self.edt_text_var = ctk.StringVar(value=self.controller.get_default_directory())
@@ -138,10 +145,13 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure((0,1,), weight=1)
 
-        self.lbl_source_folder_location = ctk.CTkLabel(
+        self.lbl_source_file_location = ctk.CTkLabel(
             master=self,
-            text="Source Folder Location",
-            font=('JetBrains Mono',18),
+            text=RedirectConstants.LabelSourceFileLocationText,
+            font=(
+                RedirectConstants.TextFontFamily,
+                RedirectConstants.MediumTextSize,
+            ),
         ).grid(
             row=0,
             column=0,
@@ -152,7 +162,10 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
 
         self.edt_source_file_location = ctk.CTkEntry(
             master=self,
-            font=('JetBrains Mono',14),
+            font=(
+                RedirectConstants.TextFontFamily,
+                RedirectConstants.SmallTextSize,
+            ),
             textvariable=self.edt_text_var,
             justify="right",
             state="disabled",
@@ -165,11 +178,19 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         )
 
         self.img_source_folder_location = ctk.CTkImage(
-            dark_image=Image.open(self.controller.resource_path(".\\images\\folder_location.png")),
-            size=(20,20),
+            dark_image=Image.open(
+                self.controller.resource_path(
+                    relative_path=RedirectConstants.ImageOpenDialog,
+                ),
+            ),
+            size=
+            (
+                20,
+                20
+            ),
         )
 
-        self.btn_source_folder_location = ctk.CTkButton(
+        self.btn_source_file_location = ctk.CTkButton(
             master=self,
             image=self.img_source_folder_location,
             text="",
@@ -191,26 +212,31 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
     ):
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageUserInteractionStart}: SOURCE_FILE_SELECTION"
+            log_message=f"{RedirectConstants.LogMessageUserInteractionStart}: SOURCE_FILE_SELECTION"
         )
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3].capitalize}"
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(13)}): [Show Error Message | {show_error_message}]"
+            log_message=f"{RedirectConstants.LogMessageFunctionParameters}({self.controller.get_line_number(13)}): [Show Error Message | {show_error_message}]"
         )
         file_name = filedialog.askopenfilename(
-            title=self.controller.const.TitleSourceFileDialog,
+            title=RedirectConstants.TitleSourceFileDialog,
             initialdir=self.controller.get_default_directory(),
-            defaultextension=".txt",
-            filetypes=[("Text Files",".txt")],
+            defaultextension=RedirectConstants.DefaultSourceFileExtension,
+            filetypes=[
+                (
+                    RedirectConstants.ExtensionTypeSourceFile,
+                    RedirectConstants.DefaultSourceFileExtension,
+                ),
+            ],
         )
         if file_name:
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): User has selected a source file."
+                log_message=f"{RedirectConstants.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): User has selected a source file."
             )
             if self.controller.set_source_file_name(
                 file_name=file_name,
@@ -222,11 +248,11 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         else:
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): User has aborted the source file selection."
+                log_message=f"{RedirectConstants.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): User has aborted the source file selection."
             )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageUserInteractionEnd}: SOURCE_FILE_SELECTION"
+            log_message=f"{RedirectConstants.LogMessageUserInteractionEnd}: SOURCE_FILE_SELECTION"
         )
 
     def update_edt_source_folder_location(
@@ -235,11 +261,11 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3].capitalize}"
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(8)}): [New Text | {new_text}]"
+            log_message=f"{RedirectConstants.LogMessageFunctionParameters}({self.controller.get_line_number(8)}): [New Text | {new_text}]"
         )
         self.edt_text_var.set(new_text)
         if self.controller.must_update_edt_redirect_folder_location():
@@ -261,7 +287,7 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
         self.controller = controller
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageClassInitializing}({self.controller.get_line_number(11)}): {self.__class__.__name__}"
+            log_message=f"{RedirectConstants.LogMessageClassInitializing}({self.controller.get_line_number(11)}): {self.__class__.__name__}"
         )
 
         self.edt_text_var = ctk.StringVar(value=self.controller.get_default_directory())
@@ -271,8 +297,11 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
 
         self.lbl_redirect_folder_location = ctk.CTkLabel(
             master=self,
-            text="Redirect Folder Location",
-            font=('JetBrains Mono',18),
+            text=RedirectConstants.LabelRedirectFolderLocationText,
+            font=(
+                RedirectConstants.TextFontFamily,
+                RedirectConstants.MediumTextSize,
+            ),
         ).grid(
             row=0,
             column=0,
@@ -283,7 +312,10 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
 
         self.edt_redirect_folder_location = ctk.CTkEntry(
             master=self,
-            font=('JetBrains Mono',14),
+            font=(
+                RedirectConstants.TextFontFamily,
+                RedirectConstants.SmallTextSize,
+            ),
             textvariable=self.edt_text_var,
             justify="right",
             state="disabled",
@@ -296,8 +328,15 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
         )
 
         self.img_redirect_folder_location = ctk.CTkImage(
-            dark_image=Image.open(self.controller.resource_path(".\\images\\folder_location.png")),
-            size=(20,20),
+            dark_image=Image.open(
+                self.controller.resource_path(
+                    RedirectConstants.ImageOpenDialog,
+                ),
+            ),
+            size=(
+                20,
+                20,
+            ),
         )
 
         self.btn_redirect_folder_location = ctk.CTkButton(
@@ -319,26 +358,26 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
     ):
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageUserInteractionStart}: REDIRECT_FOLDER_SELECTION"
+            log_message=f"{RedirectConstants.LogMessageUserInteractionStart}: REDIRECT_FOLDER_SELECTION"
         )
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(9)}): {inspect.stack()[0][3]}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(9)}): {inspect.stack()[0][3].capitalize}"
         )
         folder = filedialog.askdirectory(
-            title=self.controller.const.TitleDestinationFolderDialog,
+            title=RedirectConstants.TitleDestinationFolderDialog,
             initialdir=self.edt_text_var.get(),
         )
         if folder:
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): User has selected a folder."
+                log_message=f"{RedirectConstants.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): User has selected a folder."
             )
             self.controller.set_redirect_folder_name(folder)
             self.update_edt_redirect_folder_location(folder)
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageUserInteractionEnd}: REDIRECT_FOLDER_SELECTION"
+            log_message=f"{RedirectConstants.LogMessageUserInteractionEnd}: REDIRECT_FOLDER_SELECTION"
         )
     
     def update_edt_redirect_folder_location(
@@ -347,16 +386,16 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3].capitalize}"
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(8)}): [New Text | {new_text}]"
+            log_message=f"{RedirectConstants.LogMessageFunctionParameters}({self.controller.get_line_number(8)}): [New Text | {new_text}]"
         )
         self.edt_text_var.set(new_text)
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Entry Redirect Folder Location Updated."
+            log_message=f"{RedirectConstants.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): Entry Redirect Folder Location Updated."
         )
 
 class MainWindow(ctk.CTk):
@@ -371,14 +410,14 @@ class MainWindow(ctk.CTk):
         self.controller = controller
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageClassInitializing}({self.controller.get_line_number(11)}): {self.__class__.__name__}"
+            log_message=f"{RedirectConstants.LogMessageClassInitializing}({self.controller.get_line_number(11)}): {self.__class__.__name__}"
         )
 
-        self.title("Redirect 404 URLs")
-        self.geometry("1000x600")
+        self.title(RedirectConstants.ApplicationTitle)
+        self.geometry(RedirectConstants.ApplicationGeometry)
         self.iconbitmap(
             bitmap=self.controller.resource_path(
-                relative_path=self.controller.const.PathRedirectLogo
+                relative_path=RedirectConstants.PathRedirectLogo
             )
         )
         self.resizable(
@@ -393,10 +432,10 @@ class MainWindow(ctk.CTk):
 
         self.lbl_heading = ctk.CTkLabel(
             master=self,
-            text="Redirect 404 URLs",
+            text=RedirectConstants.ApplicationHeadingText,
             font=(
-                self.controller.const.LabelFontFamily,
-                self.controller.const.LabelFontSize,
+                RedirectConstants.TextFontFamily,
+                RedirectConstants.LargeTextSize,
             )
         ).grid(
             row=0,
@@ -409,12 +448,12 @@ class MainWindow(ctk.CTk):
         self.frm_shop_list = ShopListFrame(
             master=self,
             controller=controller,
-            loading_text="Loading",
+            loading_text=RedirectConstants.ApplicationLoadingText,
             corner_radius=16,
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageClassInitialized}({self.controller.get_line_number(8)}): {self.frm_shop_list.__class__.__name__}"
+            log_message=f"{RedirectConstants.LogMessageClassInitialized}({self.controller.get_line_number(8)}): {self.frm_shop_list.__class__.__name__}"
         )
         
         self.frm_shop_list.grid(
@@ -433,7 +472,7 @@ class MainWindow(ctk.CTk):
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageClassInitialized}({self.controller.get_line_number(7)}): {self.frm_source_location.__class__.__name__}"
+            log_message=f"{RedirectConstants.LogMessageClassInitialized}({self.controller.get_line_number(7)}): {self.frm_source_location.__class__.__name__}"
         )
         
         self.frm_source_location.grid(
@@ -451,7 +490,7 @@ class MainWindow(ctk.CTk):
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageClassInitialized}({self.controller.get_line_number(7)}): {self.frm_redirect_location.__class__.__name__}"
+            log_message=f"{RedirectConstants.LogMessageClassInitialized}({self.controller.get_line_number(7)}): {self.frm_redirect_location.__class__.__name__}"
         )
 
         self.frm_redirect_location.grid(
@@ -465,8 +504,11 @@ class MainWindow(ctk.CTk):
         self.btn_generate_csv = ctk.CTkButton(
             master=self,
             corner_radius=20,
-            text="Generate CSV File",
-            font=('JetBrains Mono',18),
+            text=RedirectConstants.TextButtonGenerate,
+            font=(
+                RedirectConstants.TextFontFamily,
+                RedirectConstants.MediumTextSize,
+            ),
             command=lambda:self.controller.generate_csv_file(
                 show_error_message=True,
             ),
@@ -490,11 +532,11 @@ class MessageWindow(ctk.CTkToplevel):
         ):
         super().__init__(*args, **kwargs)
 
-        self.title("You have a Message")
+        self.title(RedirectConstants.MessageWindowTitle)
         self.controller = controller
         self.text_message = text_message
         self.geometry(str(len(self.text_message) * 10)+'x200')
-        self.iconbitmap(self.controller.resource_path("images\\RedirectLogo.ico"))
+        self.iconbitmap(self.controller.resource_path(RedirectConstants.ImageApplicationIcon))
         self.resizable(
             height=False,
             width=False,
@@ -506,7 +548,10 @@ class MessageWindow(ctk.CTkToplevel):
         self.lbl_heading = ctk.CTkLabel(
             master=self,
             text=self.text_message,
-            font=('JetBrains Mono', 14),
+            font=(
+                RedirectConstants.TextFontFamily,
+                RedirectConstants.SmallTextSize,
+            ),
         ).grid(
             row=0,
             column=0,
@@ -515,11 +560,14 @@ class MessageWindow(ctk.CTkToplevel):
 
         self.btn_ok = ctk.CTkButton(
             master=self,
-            text='OK',
+            text=RedirectConstants.TextMessageWindowButton,
             command=lambda: self.controller.close_message(
                 close_application=close_application,
             ),
-            font=('JetBrains Mono', 14),
+            font=(
+                RedirectConstants.TextFontFamily,
+                RedirectConstants.SmallTextSize,
+            ),
             corner_radius=16,
         ).grid(
             row=1,
@@ -535,7 +583,7 @@ class RedirectView:
         self.controller = controller
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageClassInitializing}({self.controller.get_line_number(6)}): {self.__class__.__name__}"
+            log_message=f"{RedirectConstants.LogMessageClassInitializing}({self.controller.get_line_number(6)}): {self.__class__.__name__}"
         )
 
         self.sub_root = None
@@ -549,17 +597,17 @@ class RedirectView:
 
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageClassInitialized}({self.controller.get_line_number(5)}): {self.root.__class__.__name__}"
+            log_message=f"{RedirectConstants.LogMessageClassInitialized}({self.controller.get_line_number(5)}): {self.root.__class__.__name__}"
         )
     
     def center(
         self,
         win,
     ):
-        """
+        '''
         centers a tkinter window
         :param win: the main window or Toplevel window to center
-        """
+        '''
         win.update_idletasks()
         width = win.winfo_width()
         frm_width = win.winfo_rootx() - win.winfo_x()
@@ -579,15 +627,15 @@ class RedirectView:
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3].capitalize}"
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(9)}): [Text Message | {text_message}]"
+            log_message=f"{RedirectConstants.LogMessageFunctionParameters}({self.controller.get_line_number(9)}): [Text Message | {text_message}]"
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(12)}): [Close Application | {close_application}]"
+            log_message=f"{RedirectConstants.LogMessageFunctionParameters}({self.controller.get_line_number(12)}): [Close Application | {close_application}]"
         )
         if self.sub_root is None or not self.sub_root.winfo_exists():
             self.sub_root = MessageWindow(
@@ -610,7 +658,7 @@ class RedirectView:
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3].capitalize}"
         )
         self.sub_root.destroy()
         self.sub_root = None
@@ -636,6 +684,6 @@ class RedirectView:
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3].capitalize}"
         )        
         self.root.destroy()
