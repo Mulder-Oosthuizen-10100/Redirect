@@ -296,7 +296,6 @@ def is_admin():
 if __name__ == "__main__":
 
     if is_admin():
-        # Code of your program here
         configuration = RedirectConfiguration()
 
         logger = RedirectLogger(
@@ -311,5 +310,4 @@ if __name__ == "__main__":
             logger=logger
         )        
     else:
-        # Re-run the program with admin rights
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__.join(sys.argv), None, 1)

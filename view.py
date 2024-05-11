@@ -540,11 +540,35 @@ class RedirectView:
         self.root = MainWindow(
             controller=self.controller,
         )
+        
+        self.center(
+            win=self.root
+        )
+
         self.controller.debug(
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageClassInitialized}({self.controller.get_line_number(5)}): {self.root.__class__.__name__}"
         )
-        self.root.eval('tk::PlaceWindow . center')
+    
+    def center(
+        self,
+        win,
+    ):
+        """
+        centers a tkinter window
+        :param win: the main window or Toplevel window to center
+        """
+        win.update_idletasks()
+        width = win.winfo_width()
+        frm_width = win.winfo_rootx() - win.winfo_x()
+        win_width = width + 2 * frm_width
+        height = win.winfo_height()
+        titlebar_height = win.winfo_rooty() - win.winfo_y()
+        win_height = height + titlebar_height + frm_width
+        x = win.winfo_screenwidth() // 2 - win_width // 2
+        y = win.winfo_screenheight() // 2 - win_height // 2
+        win.geometry('{}x{}+{}+{}'.format(width, height, x, y))
+        win.deiconify()
 
     def open_message(
         self,
@@ -555,12 +579,21 @@ class RedirectView:
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
         )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(9)}): [Text Message | {text_message}]"
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(12)}): [Close Application | {close_application}]"
+        )
         if self.sub_root is None or not self.sub_root.winfo_exists():
             self.sub_root = MessageWindow(
                 controller=self.controller,
                 text_message=text_message,
                 close_application=close_application,
             )
+            self.center(self.sub_root)
             self.sub_root.grab_set()
         else:
             previous_message=self.sub_root.text_message
