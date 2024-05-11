@@ -17,12 +17,6 @@ class RedirectLogger():
 
         if log_config.log_level:
             self.log_level = log_config.log_level
-    
-    def get_configuration(self):
-        configuration_string = '{"Log Configuration":[{"Log File":"' + self.log_file_name + '"},'
-        configuration_string = configuration_string + '{"Location":"' + self.log_file_location.replace('\\','-').replace(':','') + '"},'
-        configuration_string = configuration_string + '{"Level":"' + self.log_level.name + '"}]}'
-        return configuration_string
 
     def get_line_number(
         self,
@@ -72,7 +66,6 @@ class RedirectLogger():
         log_level: LogLevel,
     ) -> str:
         date_time_string = datetime.now().strftime("%T.%f")[:-3]
-        # log_caller_string = ('{: <10}'.format(log_caller.name))
         log_caller_string = (log_caller.name[:3]) if len(log_caller.name) > 3 else log_caller.name
         log_level_string = ('{: <5}'.format(log_level.name))
 

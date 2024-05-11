@@ -24,7 +24,7 @@ class RedirectValidator():
     ) -> bool:
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(9)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(9)}): {inspect.stack()[0][3]}"
         )
         if lst_dict_websites:
             if lst_dict_keywords:
@@ -35,7 +35,7 @@ class RedirectValidator():
                     )                    
                     self.controller.debug(
                         log_caller=_caller,
-                        log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [TRUE]"
+                        log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [TRUE]"
                     )
                     return True
                 else:
@@ -50,7 +50,7 @@ class RedirectValidator():
                     )
                     self.controller.debug(
                         log_caller=_caller,
-                        log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
+                        log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
                     )
                     return False
             else:
@@ -65,7 +65,7 @@ class RedirectValidator():
                 )
                 self.controller.debug(
                     log_caller=_caller,
-                    log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
+                    log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
                 )
                 return False
         else:
@@ -80,7 +80,7 @@ class RedirectValidator():
             )
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
+                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
             )
             return False
 
@@ -91,7 +91,7 @@ class RedirectValidator():
     ) -> bool:
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
@@ -113,13 +113,13 @@ class RedirectValidator():
             )
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
+                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
             )
             return False
         else:
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [TRUE]"
+                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [TRUE]"
             )
             return True
 
@@ -134,7 +134,7 @@ class RedirectValidator():
         '''
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(12)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(12)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
@@ -154,7 +154,7 @@ class RedirectValidator():
                     ).st_size > 0:
                         self.controller.debug(
                             log_caller=_caller,
-                            log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [TRUE]"
+                            log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [TRUE]"
                         )
                         return True
                     else:
@@ -169,7 +169,7 @@ class RedirectValidator():
                         )
                         self.controller.debug(
                             log_caller=_caller,
-                            log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
+                            log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
                         )
                         return False
                 else:
@@ -184,7 +184,7 @@ class RedirectValidator():
                     )
                     self.controller.debug(
                         log_caller=_caller,
-                        log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
+                        log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
                     )
                     return False
             else:
@@ -199,7 +199,7 @@ class RedirectValidator():
                 )
                 self.controller.debug(
                     log_caller=_caller,
-                    log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
+                    log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
                 )
                 return False
         except OSError as e:
@@ -214,7 +214,7 @@ class RedirectValidator():
             )
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
+                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
             )
             return False
         except Exception as e:
@@ -229,6 +229,6 @@ class RedirectValidator():
             )
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
+                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
             )
             return False

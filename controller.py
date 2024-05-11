@@ -79,7 +79,7 @@ class RedirectController:
     ):
         self.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.get_line_number(5)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.get_line_number(5)}): {inspect.stack()[0][3]}"
         )
         if self.model.set_model_data():
             self.view.add_shops(
@@ -136,14 +136,14 @@ class RedirectController:
     ):
         self.debug(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageUserInteractionStart}: {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageUserInteractionStart}: {inspect.stack()[0][3]}"
         )
         self.model.generate_csv_file(
             show_error_message=show_error_message,
         )
         self.debug(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageUserInteractionEnd}: {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageUserInteractionEnd}: {inspect.stack()[0][3]}"
         )        
     
     def get_default_directory(
@@ -277,7 +277,7 @@ class RedirectController:
     ):
         self.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.get_line_number(6)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.get_line_number(6)}): {inspect.stack()[0][3]}"
         )
         self.debug(
             log_caller=_caller,
@@ -297,19 +297,22 @@ def is_admin():
         return False
 
 if __name__ == "__main__":
-    # if is_admin():
-        configuration = RedirectConfiguration()
+    try:
+        if is_admin():
+            configuration = RedirectConfiguration()
 
-        logger = RedirectLogger(
-            log_config=RedirectLogger.get_log_config()
-        )
+            logger = RedirectLogger(
+                log_config=RedirectLogger.get_log_config()
+            )
 
-        logger.log_level = configuration.LogLevel
+            logger.log_level = configuration.LogLevel
 
-        print(f"Log Level: {configuration.LogLevel}")
-        
-        controller = RedirectController(
-            logger=logger
-        )        
-    # else:
-        # ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__.join(sys.argv), None, 1)
+            print(f"Log Level: {configuration.LogLevel}")
+            
+            controller = RedirectController(
+                logger=logger
+            )        
+        else:
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__.join(sys.argv), None, 1)
+    except Exception as e:
+        print(e)

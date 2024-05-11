@@ -52,7 +52,7 @@ class ShopListFrame(ctk.CTkScrollableFrame):
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
@@ -111,7 +111,7 @@ class ShopListFrame(ctk.CTkScrollableFrame):
         )
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
         )
         self.controller.set_shop_name(
             shop_name=self.rdbtn_var.get(),
@@ -216,7 +216,7 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         )
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
@@ -261,7 +261,7 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
@@ -362,7 +362,7 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
         )
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(9)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(9)}): {inspect.stack()[0][3]}"
         )
         folder = filedialog.askdirectory(
             title=RedirectConstants.TitleDestinationFolderDialog,
@@ -386,7 +386,7 @@ class RedirectFolderLocationFrame(ctk.CTkFrame):
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
@@ -627,7 +627,7 @@ class RedirectView:
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
@@ -658,7 +658,7 @@ class RedirectView:
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
         )
         self.sub_root.destroy()
         self.sub_root = None
@@ -684,6 +684,6 @@ class RedirectView:
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
         )        
         self.root.destroy()

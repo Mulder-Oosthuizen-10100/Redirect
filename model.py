@@ -22,7 +22,7 @@ class RedirectModel():
     ) -> bool:
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
         )
         
         self.service_account = gspread.service_account()
@@ -81,13 +81,13 @@ class RedirectModel():
         ):
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [TRUE]"
+                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [TRUE]"
             )
             return True
         else:
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
+                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
             )
             return False
 
@@ -96,14 +96,14 @@ class RedirectModel():
     ) -> str:
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
         )
         p = os.path.expanduser(
             path=RedirectConstants.DefaultDirectory
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [{p}]"
+            log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [{p}]"
         )
         return p
     
@@ -112,11 +112,11 @@ class RedirectModel():
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(5)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [{RedirectConstants.ResultMustUpdateRedirectFolder}]"
+            log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [{RedirectConstants.ResultMustUpdateRedirectFolder}]"
         )
         return RedirectConstants.ResultMustUpdateRedirectFolder
     
@@ -126,7 +126,7 @@ class RedirectModel():
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
@@ -137,7 +137,7 @@ class RedirectModel():
         )
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [{p}]"
+            log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [{p}]"
         )
         return p
 
@@ -148,7 +148,7 @@ class RedirectModel():
     ) -> bool:
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(8)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(8)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
@@ -165,14 +165,14 @@ class RedirectModel():
             self.source_file_name = file_name
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [TRUE]"
+                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [TRUE]"
             )
             return True
         else:
             self.source_file_name = None
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [FALSE]"
+                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
             )
             return False
 
@@ -182,7 +182,7 @@ class RedirectModel():
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
@@ -197,7 +197,7 @@ class RedirectModel():
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
@@ -219,7 +219,7 @@ class RedirectModel():
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(8)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(8)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
@@ -270,7 +270,7 @@ class RedirectModel():
     ) -> bool:
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
@@ -302,7 +302,7 @@ class RedirectModel():
             )
             self.controller.debug(
                 log_caller=_caller,
-                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [TRUE]"
+                log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [TRUE]"
             )
             return True
 
@@ -311,7 +311,7 @@ class RedirectModel():
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
         )
         if self.source_file:
             self.controller.debug(
@@ -329,7 +329,7 @@ class RedirectModel():
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(7)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
@@ -345,7 +345,7 @@ class RedirectModel():
                 if remove_part:
                     self.controller.debug(
                         log_caller=_caller,
-                        log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [{remove_part}]"
+                        log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [{remove_part}]"
                     )
                     return remove_part
                 else:
@@ -360,7 +360,7 @@ class RedirectModel():
                     )
                     self.controller.debug(
                         log_caller=_caller,
-                        log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3].capitalize} -> [{RedirectConstants.EmptyString}]"
+                        log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [{RedirectConstants.EmptyString}]"
                     )
                     return RedirectConstants.EmptyString
     
@@ -370,7 +370,7 @@ class RedirectModel():
     ):
         self.controller.info(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3].capitalize}"
+            log_message=f"{RedirectConstants.LogMessageFunctionCalled}({self.controller.get_line_number(6)}): {inspect.stack()[0][3]}"
         )
         self.controller.debug(
             log_caller=_caller,
@@ -444,5 +444,5 @@ class RedirectModel():
                             break
         self.controller.debug(
             log_caller=_caller,
-            log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(0)}): {inspect.stack()[0][3].capitalize} -> [None]"
+            log_message=f"{RedirectConstants.LogMessageFunctionReturned}({self.controller.get_line_number(0)}): {inspect.stack()[0][3]} -> [None]"
         )
