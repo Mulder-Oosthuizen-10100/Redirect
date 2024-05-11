@@ -109,12 +109,10 @@ class RedirectController:
         self,
         file_name,
         show_error_message,
-        log_error_message,
     ) -> bool:
         return self.model.set_source_file_name(
             file_name=file_name,
             show_error_message=show_error_message,
-            log_error_message=log_error_message,
         )
 
     def set_redirect_folder_name(
@@ -136,7 +134,6 @@ class RedirectController:
     def generate_csv_file(
         self,
         show_error_message,
-        log_error_message,
     ):
         self.debug(
             log_caller=_caller,
@@ -144,7 +141,6 @@ class RedirectController:
         )
         self.model.generate_csv_file(
             show_error_message=show_error_message,
-            log_error_message=log_error_message,
         )
         self.debug(
             log_caller=_caller,
@@ -198,12 +194,10 @@ class RedirectController:
         self,
         source_file_name,
         show_error_message,
-        log_error_message,
     ) -> bool:
         return self.validate.validate_source_file_name(
             source_file_name=source_file_name,
             show_error_message=show_error_message,
-            log_error_message=log_error_message,
         )
 
 # LOG
@@ -247,6 +241,17 @@ class RedirectController:
     ):
         self.logger.log(
             log_level=LogLevel.Error,
+            log_caller=log_caller,
+            log_message=log_message
+        )
+
+    def exception(
+        self,
+        log_caller: LogCaller,
+        log_message: str,
+    ):
+        self.logger.log(
+            log_level=LogLevel.Except,
             log_caller=log_caller,
             log_message=log_message
         )
@@ -295,7 +300,7 @@ def is_admin():
 
 if __name__ == "__main__":
 
-    if is_admin():
+    # if is_admin():
         configuration = RedirectConfiguration()
 
         logger = RedirectLogger(
@@ -309,5 +314,5 @@ if __name__ == "__main__":
         controller = RedirectController(
             logger=logger
         )        
-    else:
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__.join(sys.argv), None, 1)
+    # else:
+        # ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__.join(sys.argv), None, 1)

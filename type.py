@@ -3,10 +3,11 @@ from enum import Enum
 
 class LogLevel(Enum):
     Nothing = -1
-    Error = 0
-    Warn = 1
-    Info = 2
-    Debug = 3
+    Except = 0
+    Error = 1
+    Warn = 2
+    Info = 3
+    Debug = 4
 
 class LogCaller(Enum):
     Controller = 0

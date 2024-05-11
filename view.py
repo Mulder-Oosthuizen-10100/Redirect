@@ -62,12 +62,14 @@ class ShopListFrame(ctk.CTkScrollableFrame):
 
         for shop in lst_dict_websites:
             self.grid_rowconfigure(self.row_count, weight=1)
+            loop_shop_name = shop.get('WEBSITE')
+            self.rdbtn_var.set(loop_shop_name)
             ctk.CTkRadioButton(
                 master=self,
-                text=shop.get('WEBSITE'),
+                text=loop_shop_name,
                 font=('JetBrains Mono',14),
                 variable=self.rdbtn_var,
-                value=shop.get('WEBSITE'),
+                value=loop_shop_name,
                 command=self.rdbtn_selected,
             ).grid(
                 row=self.row_count,
@@ -83,6 +85,15 @@ class ShopListFrame(ctk.CTkScrollableFrame):
             )
 
             self.row_count += 1
+        
+        self.controller.set_shop_name(
+            shop_name=self.rdbtn_var.get(),
+            show_error_message=True
+        )
+        self.controller.debug(
+            log_caller=_caller,
+            log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(6)}): Auto selected shop -> {loop_shop_name}."
+        )
 
     def rdbtn_selected(
         self
@@ -123,7 +134,6 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         self.controller.set_source_file_name(
             file_name=self.edt_text_var.get(),
             show_error_message=False,
-            log_error_message=False,
         )
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure((0,1,), weight=1)
@@ -165,7 +175,6 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
             text="",
             command=lambda: self.open_source_file(
                 show_error_message=True,
-                log_error_message=True,
             ),
             width=20,
             height=20,
@@ -179,7 +188,6 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
     def open_source_file(
         self,
         show_error_message,
-        log_error_message,
     ):
         self.controller.debug(
             log_caller=_caller,
@@ -192,10 +200,6 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
         self.controller.debug(
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(13)}): [Show Error Message | {show_error_message}]"
-        )
-        self.controller.debug(
-            log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(17)}): [Log Error Message | {log_error_message}]"
         )
         file_name = filedialog.askopenfilename(
             title=self.controller.const.TitleSourceFileDialog,
@@ -211,7 +215,6 @@ class SourceFolderLocationFrame(ctk.CTkFrame):
             if self.controller.set_source_file_name(
                 file_name=file_name,
                 show_error_message=show_error_message,
-                log_error_message=log_error_message,
             ):
                 self.update_edt_source_folder_location(
                     new_text=file_name
@@ -466,7 +469,6 @@ class MainWindow(ctk.CTk):
             font=('JetBrains Mono',18),
             command=lambda:self.controller.generate_csv_file(
                 show_error_message=True,
-                log_error_message=True,
             ),
             width=100,
             height=50,

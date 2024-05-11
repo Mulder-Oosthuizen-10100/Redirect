@@ -144,7 +144,6 @@ class RedirectModel():
         self,
         file_name,
         show_error_message,
-        log_error_message,
     ) -> bool:
         self.controller.info(
             log_caller=_caller,
@@ -158,14 +157,9 @@ class RedirectModel():
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(13)}): [Show Error Message | {show_error_message}]"
         )
-        self.controller.debug(
-            log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(16)}): [Log Error Message | {log_error_message}]"
-        )
         if self.controller.validate_source_file_name(
             source_file_name=file_name,
             show_error_message=show_error_message,
-            log_error_message=log_error_message,
         ):
             self.source_file_name = file_name
             self.controller.debug(
@@ -221,7 +215,6 @@ class RedirectModel():
     def generate_csv_file(
         self,
         show_error_message,
-        log_error_message,
     ):
         self.controller.info(
             log_caller=_caller,
@@ -231,17 +224,12 @@ class RedirectModel():
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(9)}): [Show Error Message | {show_error_message}]"
         )
-        self.controller.debug(
-            log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(11)}): [Log Error Message | {log_error_message}]"
-        )
         if self.controller.validate_shop_name(
             shop_name=self.shop_name,
             show_error_message=show_error_message,
         ):
             if self.open_files(
                 show_error_message=show_error_message,
-                log_error_message=log_error_message,
             ):
                 try:
                     self.controller.debug(
@@ -261,8 +249,12 @@ class RedirectModel():
                         log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): ...EXCEPT..."
                     )
                     self.controller.open_message(
-                        text_message=f"An Error occurred during the redirect process! Error Message: {e}",
+                        text_message=f"ERROR: An Error occurred during the redirect process!\nPlease see the log file for more detail.",
                         close_application=False,
+                    )
+                    self.controller.exception(
+                        log_caller=_caller,
+                        log_message=e,
                     )
                 finally:
                     self.controller.debug(
@@ -274,7 +266,6 @@ class RedirectModel():
     def open_files(
         self,
         show_error_message,
-        log_error_message,
     ) -> bool:
         self.controller.info(
             log_caller=_caller,
@@ -284,10 +275,6 @@ class RedirectModel():
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(9)}): [Show Error Message | {show_error_message}]"
         )
-        self.controller.debug(
-            log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(12)}): [Log Error Message | {log_error_message}]"
-        )
         date_time = datetime.now()
         date_time_string = date_time.strftime("%Y_%m_%d__%H_%M_%S")
         self.redirect_file_name = self.redirect_folder_name + '\\' + f'redirect_{date_time_string}.csv'
@@ -296,7 +283,6 @@ class RedirectModel():
         if self.controller.validate_source_file_name(
             source_file_name=self.source_file_name,
             show_error_message=show_error_message,
-            log_error_message=log_error_message,
         ):
             self.source_file = open(self.source_file_name, 'r')
             self.controller.debug(
@@ -395,8 +381,30 @@ class RedirectModel():
         )
 
         for line in self.source_file:
-            line = str.replace(line, "\n", "")
-            line = str.replace(line, "\t", "")
+            try:
+                self.controller.debug(
+                    log_caller=_caller,
+                    log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): TRY..."
+                )
+                line = line.rstrip('\n\t')
+            except Exception as e:
+                self.controller.debug(
+                    log_caller=_caller,
+                    log_message=f"{self.controller.const.LogMessageFunctionStatement}({self.controller.get_line_number(3)}): ...EXCEPT..."
+                )
+                self.controller.open_message(
+                    text_message=f"ERROR: An error occurred trying to process a line in the source file!\nPlease see the log file for more detail.",
+                    close_application=True
+                )
+                self.controller.exception(
+                    log_caller=_caller,
+                    log_message=e,
+                )
+
+            # tmp: str = line
+            # tmp = tmp.rstrip('\n\t')
+            # line = str.replace(line, "\n", "")
+            # line = str.replace(line, "\t", "")
             line = str.replace(
                 line,
                 remove_part,

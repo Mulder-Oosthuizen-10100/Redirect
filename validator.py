@@ -126,7 +126,6 @@ class RedirectValidator():
         self,
         source_file_name,
         show_error_message,
-        log_error_message,
     ) -> bool:
         '''
         This function will validate if the file is a file and not a directory. It will also check that the file is a valid file 
@@ -143,10 +142,6 @@ class RedirectValidator():
         self.controller.debug(
             log_caller=_caller,
             log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(17)}): [Show Error Message | {show_error_message}]"
-        )
-        self.controller.debug(
-            log_caller=_caller,
-            log_message=f"{self.controller.const.LogMessageFunctionParameters}({self.controller.get_line_number(20)}): [Log Error Message | {log_error_message}]"
         )
         try:
             if source_file_name:
@@ -167,11 +162,10 @@ class RedirectValidator():
                                 text_message="The selected source file is empty!",
                                 close_application=False,
                             )
-                        if log_error_message:
-                            self.controller.error(
-                                log_caller=_caller,
-                                log_message=f"Source file empty -> '{source_file_name}'.",
-                            )
+                        self.controller.error(
+                            log_caller=_caller,
+                            log_message=f"Source file empty -> '{source_file_name}'.",
+                        )
                         self.controller.debug(
                             log_caller=_caller,
                             log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
@@ -183,11 +177,10 @@ class RedirectValidator():
                             text_message="The selected source file is not a file!",
                             close_application=False,
                         )
-                    if log_error_message:
-                        self.controller.error(
-                            log_caller=_caller,
-                            log_message=f"Source file is not a file -> '{source_file_name}'.",
-                        )
+                    self.controller.error(
+                        log_caller=_caller,
+                        log_message=f"Source file is not a file -> '{source_file_name}'.",
+                    )
                     self.controller.debug(
                         log_caller=_caller,
                         log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
@@ -199,27 +192,25 @@ class RedirectValidator():
                         text_message="Please select a source file!",
                         close_application=False,
                     )
-                if log_error_message:
-                    self.controller.error(
-                        log_caller=_caller,
-                        log_message=f"Source file is None -> '{source_file_name}'.",
-                    )
+                self.controller.error(
+                    log_caller=_caller,
+                    log_message=f"Source file is None -> '{source_file_name}'.",
+                )
                 self.controller.debug(
                     log_caller=_caller,
                     log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
                 )
                 return False
-        except OSError:
+        except OSError as e:
             if show_error_message:
                 self.controller.open_message(
-                    text_message="Source File: DOES NOT EXIST",
+                    text_message="Source File: DOES NOT EXIST\nPlease see the log file for more detail.",
                     close_application=False,
                 )
-            if log_error_message:
-                self.controller.error(
-                    log_caller=_caller,
-                    log_message=f"Source File: DOES NOT EXIST -> '{source_file_name}'.",
-                )
+            self.controller.exception(
+                log_caller=_caller,
+                log_message=e,
+            )
             self.controller.debug(
                 log_caller=_caller,
                 log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
@@ -228,14 +219,13 @@ class RedirectValidator():
         except Exception as e:
             if show_error_message:
                 self.controller.open_message(
-                    text_message="An unknown exception occurred!",
+                    text_message="An unknown exception occurred!\nPlease see the log file for more detail.",
                     close_application=False,
                 )
-            if log_error_message:
-                self.controller.error(
-                    log_caller=_caller,
-                    log_message=f"An Error occurred during the validation of the source file! Error Message: {e}.",
-                )
+            self.controller.exception(
+                log_caller=_caller,
+                log_message=e
+            )
             self.controller.debug(
                 log_caller=_caller,
                 log_message=f"{self.controller.const.LogMessageFunctionReturned}({self.controller.get_line_number(-2)}): {inspect.stack()[0][3]} -> [FALSE]"
