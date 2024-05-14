@@ -1,3 +1,4 @@
 gspread
 pyinstaller
 Pillow
+customtkinter
